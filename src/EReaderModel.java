@@ -47,61 +47,8 @@ public class EReaderModel {
 		ArrayList<String[]> lines = book.lines();
 		return lines;
 	}
-
-/*
- * 
- */
 	
-
-/*
-**************************************************************************************
-**************************************PRIVATE INNER CLASS*****************************
-**************************************************************************************
-*/
-	
-	
-	/**
-	 * 
-	 * @author alihamzanoor
-	 *
-	 */
-	private class Book {
-		
-		
-		private ArrayList<String[]> lines = new ArrayList<>();
-		/**
-		 * 
-		 * @param name
-		 */
-		public Book(String name) {
-			readBook(name);
-		}
-		
-		/**
-		 * 
-		 * @param name
-		 */
-		public void readBook(String name) {
-			try {
-				File myObj = new File("book1.txt");
-				Scanner myReader = new Scanner(myObj);
-				while (myReader.hasNextLine()) {
-					String data = myReader.nextLine();
-					String[] line = data.replaceAll("[\\\r\\\n]+","").trim().split("\\s+");
-					lines.add(line);
-				}
-				myReader.close();
-			} catch (FileNotFoundException e) {
-				System.out.println("Error");
-				e.printStackTrace();
-			}
-		}
-		
-		public ArrayList<String[]> lines() {
-			return lines;
-		}
-		
-		
+	public HashMap<String, Book> getLibrary(){
+		return bookLibrary;
 	}
-
 }
