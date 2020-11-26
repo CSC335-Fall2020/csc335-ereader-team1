@@ -32,4 +32,8 @@ public class EReaderController {
 		return model.getLines(name);
 	}
 	
+	public void nothing() {
+		
+	}
+	
 }
