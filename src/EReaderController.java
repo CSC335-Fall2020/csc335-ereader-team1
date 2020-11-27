@@ -28,7 +28,7 @@ public class EReaderController {
 	 * 
 	 * @param name
 	 */
-	public ArrayList<String[]> getLines(String name) {
+	public ArrayList<String> getLines(String name) {
 		return model.getLines(name);
 	}
 	

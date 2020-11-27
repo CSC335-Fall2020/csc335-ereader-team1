@@ -42,9 +42,9 @@ public class EReaderModel {
 	 * 
 	 * @param name
 	 */
-	public ArrayList<String[]> getLines(String name) {
+	public ArrayList<String> getLines(String name) {
 		Book book = getBook(name);
-		ArrayList<String[]> lines = book.lines();
+		ArrayList<String> lines = book.lines();
 		return lines;
 	}
 	

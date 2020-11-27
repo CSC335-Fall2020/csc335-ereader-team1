@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Book {
 
-	private ArrayList<String[]> lines = new ArrayList<>();
+	private ArrayList<String> lines = new ArrayList<>();
 
 	/**
 	 * 
@@ -21,12 +21,14 @@ public class Book {
 	 */
 	public void readBook(String name) {
 		try {
-			File myObj = new File("book1.txt");
+			File myObj = new File(name);
 			Scanner myReader = new Scanner(myObj);
 			while (myReader.hasNextLine()) {
 				String data = myReader.nextLine();
 				String[] line = data.replaceAll("[\\\r\\\n]+", "").trim().split("\\s+");
-				lines.add(line);
+				for(int i = 0;i<line.length;i++) {
+					lines.add(line[i]);	
+				}
 			}
 			myReader.close();
 		} catch (FileNotFoundException e) {
@@ -35,7 +37,7 @@ public class Book {
 		}
 	}
 
-	public ArrayList<String[]> lines() {
+	public ArrayList<String> lines() {
 		return lines;
 	}
 
