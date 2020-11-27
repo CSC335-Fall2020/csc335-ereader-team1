@@ -21,7 +21,7 @@ public class Book {
 	 */
 	public void readBook(String name) {
 		try {
-			File myObj = new File("book1.txt");
+			File myObj = new File(name);
 			Scanner myReader = new Scanner(myObj);
 			while (myReader.hasNextLine()) {
 				String data = myReader.nextLine();
