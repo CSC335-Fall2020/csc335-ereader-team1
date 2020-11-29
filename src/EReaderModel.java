@@ -13,7 +13,7 @@ public class EReaderModel {
 	public EReaderModel() {
 		readBook();
 	}
-	
+	         
 	public void readBook() {
 		for(int i = 0;i<bookName.length;i++) {
 			Book book = new Book(bookName[i]);
