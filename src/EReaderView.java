@@ -9,9 +9,12 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -198,9 +201,10 @@ public class EReaderView extends Application implements java.util.Observer {
 		 * Stores the border pane as a private field to be used
 		 * in the update
 		 */
+		border.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
 		this.border = border;
 		
-		Scene scene = new Scene(border, 1920, 1080);
+		Scene scene = new Scene(border, 920, 1080);
 		stage.setScene(scene);
 		stage.show();
 	}
