@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Book {
+	
+	private int wordsOnPage = 100;
+	private int indexNext = 0;
+	private int indexPrev;
 
 	private ArrayList<String> lines = new ArrayList<>();
 
