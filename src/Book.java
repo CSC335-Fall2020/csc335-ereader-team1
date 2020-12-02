@@ -9,12 +9,17 @@ public class Book extends Observable {
 
 	private ArrayList<String> words = new ArrayList<>();
 	
+	/* Represents current page in the book */
 	private int curPage = 0;
+	
+	/* Field that holds the book marked page in the book */
 	private int bookmark;
 	
+	/* Current Index of first word of current page */
 	private int curIndex = 0;
 	
-	private int wordsOnPage = 150;
+	/* Field that represents how many words are on a page */
+	private int wordsOnPage = 170;
 
 	/**
 	 * 
@@ -58,6 +63,14 @@ public class Book extends Observable {
 		
 		/* This string holds the words for the first page of the book */
 		String firstPage = "";
+		
+		/*
+		 * Checks the size of the book in order to change the amount of
+		 * words that will appear on the first page.
+		 */
+		if (wordsOnPage > words.size()) {
+			wordsOnPage = words.size()-1;
+		}
 		
 		/* This index represents the next pages first words index */
 		int wordIndex = wordsOnPage + 1;
@@ -172,5 +185,4 @@ public class Book extends Observable {
 	public int getCurPage() {
 		return curPage;
 	}
-
 }

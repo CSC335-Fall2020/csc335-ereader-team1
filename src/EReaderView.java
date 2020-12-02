@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Observable;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -14,8 +13,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -28,7 +30,6 @@ public class EReaderView extends Application implements java.util.Observer {
 	private String fileName;
 	
 	/* Saves border pane for update use */
-	private GridPane lines;
 	private BorderPane border;
 	
 	/* Font settings */
@@ -38,8 +39,6 @@ public class EReaderView extends Application implements java.util.Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
 		/*
 		 * The view is observing whichever book that the library/model has
 		 * designated as the current book to look at
@@ -49,12 +48,25 @@ public class EReaderView extends Application implements java.util.Observer {
 		/* This string represents the words on the current page to display */
 		String words = (String) arg;
 		
+		/*
+		 * Creates a stack pane to stack the label representing the page on
+		 * top of the gray background
+		 */
+		StackPane stackCenter = new StackPane();
+		
+		Rectangle pageRect = new Rectangle(800, 730, Color.LIGHTGRAY);
+		
 		/* Below is the code to create a label to display as the current page */
 		Label page = new Label(words);
 		/* Wraps the text to window's size */
 		page.setWrapText(true);
 		/* Changes the wrapping nature of text to only the center of BorderPane */
 		page.setPadding(new Insets(50));
+		
+		
+		stackCenter.getChildren().addAll(pageRect, page);
+		
+		StackPane.setAlignment(page, Pos.TOP_CENTER);
 		
 		/*
 		 * Below is the code to display the font for the current page; however, this
@@ -64,9 +76,9 @@ public class EReaderView extends Application implements java.util.Observer {
 		page.setFont(font);
 		
 		/* Sets the page to the center of the BorderPane */
-		border.setCenter(page);
+		border.setCenter(stackCenter);
 		/* Aligns the page starting at the top left of the center */
-		BorderPane.setAlignment(page, Pos.TOP_LEFT);
+		BorderPane.setAlignment(stackCenter, Pos.TOP_CENTER);
 		
 		/* Below is the code to display the current page number */
 		Text pageNum = new Text("Page " + Integer.toString(curBook.getCurPage()));
@@ -130,8 +142,6 @@ public class EReaderView extends Application implements java.util.Observer {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		// TODO Auto-generated method stub
-		
 		/* 
 		 * Below is a commented line to add the view as an observer of the model
 		 */
@@ -242,6 +252,11 @@ public class EReaderView extends Application implements java.util.Observer {
 		pageNum.setFont(Font.font(20));
 		border.setBottom(pageNum);
 		BorderPane.setAlignment(pageNum, Pos.BOTTOM_CENTER);
+		
+		
+		Rectangle pageRect = new Rectangle(800, 730, Color.LIGHTGRAY);
+		border.setCenter(pageRect);
+		BorderPane.setAlignment(pageRect, Pos.TOP_CENTER);
 		
 		/* 
 		 * Stores the border pane as a private field to be used
