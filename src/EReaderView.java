@@ -1,15 +1,8 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Observable;
-import java.util.stream.Collectors;
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CustomMenuItem;
@@ -17,25 +10,26 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class EReaderView extends Application implements java.util.Observer {
 	
-	private EReaderController controller = new EReaderController(null);
+	private EReaderController controller = new EReaderController(new EReaderModel());
 	
 	/* Saves current page number */
 	private int curPage = 0;
+	private String fileName;
 	
 	/* Saves border pane for update use */
 	private BorderPane border;
@@ -43,11 +37,57 @@ public class EReaderView extends Application implements java.util.Observer {
 	/* Font settings */
 	private String fontType = "Times New Roman";
 	private int fontSize = 12;
+	
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
+		/*
+		 * The view is observing whichever book that the library/model has
+		 * designated as the current book to look at
+		 */
+		Book curBook = (Book) o;
 		
+		/* This string represents the words on the current page to display */
+		String words = (String) arg;
+		
+		/*
+		 * Creates a stack pane to stack the label representing the page on
+		 * top of the gray background
+		 */
+		StackPane stackCenter = new StackPane();
+		
+		Rectangle pageRect = new Rectangle(800, 700, Color.WHITE);
+		
+		/* Below is the code to create a label to display as the current page */
+		Label page = new Label(words);
+		/* Wraps the text to window's size */
+		page.setWrapText(true);
+		/* Changes the wrapping nature of text to only the center of BorderPane */
+		page.setPadding(new Insets(50));
+		
+		
+		stackCenter.getChildren().addAll(pageRect, page);
+		
+		StackPane.setAlignment(page, Pos.TOP_CENTER);
+		
+		/*
+		 * Below is the code to display the font for the current page; however, this
+		 * code is likely to change with the implementation of the settings
+		 */
+		Font font = new Font(fontType, fontSize + 16);
+		page.setFont(font);
+		
+		/* Sets the page to the center of the BorderPane */
+		border.setCenter(stackCenter);
+		/* Aligns the page starting at the top left of the center */
+		BorderPane.setAlignment(stackCenter, Pos.TOP_CENTER);
+		
+		/* Below is the code to display the current page number */
+		Text pageNum = new Text("Page " + Integer.toString(curBook.getCurPage()));
+		pageNum.setFont(Font.font(20));
+		/* Sets and aligns the page counter to the bottom center of the BorderPane */
+		border.setBottom(pageNum);
+		BorderPane.setAlignment(pageNum, Pos.TOP_CENTER);
 	}
 	
 	private class Open extends Stage {
@@ -84,6 +124,11 @@ public class EReaderView extends Application implements java.util.Observer {
 				fileName = fileField.getText();
 				/* Call method from controller to open file */
 				
+				controller.openFile(fileName);
+				this.fileName = fileName;
+				controller.getBook(fileName).addObserver(EReaderView.this);
+				controller.openBook();
+				
 				this.close();
 			});
 			
@@ -99,12 +144,10 @@ public class EReaderView extends Application implements java.util.Observer {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		// TODO Auto-generated method stub
-		
 		/* 
 		 * Below is a commented line to add the view as an observer of the model
-		 *
-		/* controller.getModel().addObserver(this); */ 
+		 */
+		
 		
 		stage.setTitle("E-Reader");
 		
@@ -162,6 +205,27 @@ public class EReaderView extends Application implements java.util.Observer {
 		menuBar.getMenus().add(file);
 		menuBar.getMenus().add(settings);
 		
+		/////////////////////////////////////////////////////////////////////////////////
+		/* This menu option will allow a user to find the word */
+		Menu find = new Menu("Find");
+		
+		Text find_here = new Text("Find");
+		TextField findField = new TextField();
+		
+		HBox findHBox = new HBox(10, find_here, findField);
+		fontHBox.setAlignment(Pos.BASELINE_CENTER);
+		
+		CustomMenuItem findCustomMenuItem = new CustomMenuItem(findHBox);
+		find.getItems().add(findCustomMenuItem);
+		menuBar.getMenus().add(find);
+		
+//		findField.setOnAction(keyEvent -> {
+//			
+//		});
+		
+		/////////////////////////////////////////////////////////////////////////////////
+
+		
 		/* This sets up the border pane below the menu bar */
 		BorderPane border = new BorderPane();
 		
@@ -174,6 +238,8 @@ public class EReaderView extends Application implements java.util.Observer {
 		 */
 		left.setOnAction(event -> {
 			/* Show previous page */
+			
+			controller.getPrev();
 		});
 		
 		left.setPadding(new Insets(15));
@@ -189,6 +255,9 @@ public class EReaderView extends Application implements java.util.Observer {
 		 */
 		right.setOnAction(event -> {
 			/* Show next page */
+			
+			controller.getNext();
+			
 		});
 		
 		right.setPadding(new Insets(15));
@@ -202,46 +271,28 @@ public class EReaderView extends Application implements java.util.Observer {
 		 * Below sets up the current page number, feel free
 		 * to change up the way its shown
 		 */
-		Text pageNum = new Text(Integer.toString(curPage));
+		Text pageNum = new Text("Page " + Integer.toString(curPage));
 		pageNum.setFont(Font.font(20));
 		border.setBottom(pageNum);
 		BorderPane.setAlignment(pageNum, Pos.BOTTOM_CENTER);
+		
+		
+		Rectangle pageRect = new Rectangle(800, 700, Color.WHITE);
+		border.setCenter(pageRect);
+		BorderPane.setAlignment(pageRect, Pos.CENTER);
 		
 		/* 
 		 * Stores the border pane as a private field to be used
 		 * in the update
 		 */
-		border.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
 		this.border = border;
 		
-		bookReader(); //////////////////////
-		
+
+
 		Scene scene = new Scene(border, 920, 1080);
 		stage.setScene(scene);
 		stage.show();
 	}
-	
-	public void bookReader() throws IOException {
-		FileReader reader = new FileReader("book1.txt");
-		BufferedReader br = new BufferedReader(reader);
-		String line = br.lines().collect(Collectors.joining());
-		TextArea text = new TextArea(line);
-		text.setWrapText(true);
-		text.setFont(Font.font ("times new roman", 25));
-		text.setEditable(false);
-		border.setCenter(text);
 
-//		EReaderModel model = new EReaderModel();
-//		EReaderController controller = new EReaderController(model);
-//		ArrayList<String[]> array = controller.getLines("book1.txt");
-//		for(int i = 0; i < array.size(); i++) { 
-//			TextArea text = new TextArea(Arrays.deepToString(array.get(i)));
-//			text.setFont(Font.font ("times new roman", 20));
-//			text.setEditable(false);
-//			border.setCenter(text);
-//		}
-		
-		
-	}
 
 }
