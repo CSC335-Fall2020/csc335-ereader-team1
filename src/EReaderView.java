@@ -206,6 +206,8 @@ public class EReaderView extends Application implements java.util.Observer {
 		menuBar.getMenus().add(settings);
 		
 		/////////////////////////////////////////////////////////////////////////////////
+		// adding the find field under this are
+		/////////////////////////////////////////////////////////////////////////////////
 		/* This menu option will allow a user to find the word */
 		Menu find = new Menu("Find");
 		
@@ -219,10 +221,16 @@ public class EReaderView extends Application implements java.util.Observer {
 		find.getItems().add(findCustomMenuItem);
 		menuBar.getMenus().add(find);
 		
-//		findField.setOnAction(keyEvent -> {
-//			
-//		});
+		/* Below is the button that will apply these new changes */
+		Button findButton = new Button("Find");
+		findButton.setOnAction(event -> {
+			
+		});
 		
+		CustomMenuItem findButtonCustomMenuItem = new CustomMenuItem(findButton);
+		find.getItems().add(findButtonCustomMenuItem);
+		
+		/////////////////////////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////////////////////////////////////////
 
 		
