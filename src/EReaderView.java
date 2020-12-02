@@ -72,7 +72,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		 * Below is the code to display the font for the current page; however, this
 		 * code is likely to change with the implementation of the settings
 		 */
-		Font font = new Font(fontType, fontSize + 16);
+		Font font = new Font(fontType, fontSize + 12);
 		page.setFont(font);
 		
 		/* Sets the page to the center of the BorderPane */
