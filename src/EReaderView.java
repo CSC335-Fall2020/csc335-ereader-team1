@@ -54,7 +54,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		 */
 		StackPane stackCenter = new StackPane();
 		
-		Rectangle pageRect = new Rectangle(800, 730, Color.LIGHTGRAY);
+		Rectangle pageRect = new Rectangle(800, 700, Color.LIGHTGRAY);
 		
 		/* Below is the code to create a label to display as the current page */
 		Label page = new Label(words);
@@ -85,7 +85,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		pageNum.setFont(Font.font(20));
 		/* Sets and aligns the page counter to the bottom center of the BorderPane */
 		border.setBottom(pageNum);
-		BorderPane.setAlignment(pageNum, Pos.BOTTOM_CENTER);
+		BorderPane.setAlignment(pageNum, Pos.TOP_CENTER);
 	}
 	
 	private class Open extends Stage {
@@ -254,9 +254,9 @@ public class EReaderView extends Application implements java.util.Observer {
 		BorderPane.setAlignment(pageNum, Pos.BOTTOM_CENTER);
 		
 		
-		Rectangle pageRect = new Rectangle(800, 730, Color.LIGHTGRAY);
+		Rectangle pageRect = new Rectangle(800, 700, Color.LIGHTGRAY);
 		border.setCenter(pageRect);
-		BorderPane.setAlignment(pageRect, Pos.TOP_CENTER);
+		BorderPane.setAlignment(pageRect, Pos.CENTER);
 		
 		/* 
 		 * Stores the border pane as a private field to be used
