@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Observable;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -5,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CustomMenuItem;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -19,22 +21,59 @@ import javafx.stage.Stage;
 
 public class EReaderView extends Application implements java.util.Observer {
 	
-	private EReaderController controller = new EReaderController(null);
+	private EReaderController controller = new EReaderController(new EReaderModel());
 	
 	/* Saves current page number */
 	private int curPage = 0;
+	private String fileName;
 	
 	/* Saves border pane for update use */
+	private GridPane lines;
 	private BorderPane border;
 	
 	/* Font settings */
 	private String fontType = "Times New Roman";
 	private int fontSize = 12;
+	
 
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 		
+		/*
+		 * The view is observing whichever book that the library/model has
+		 * designated as the current book to look at
+		 */
+		Book curBook = (Book) o;
+		
+		/* This string represents the words on the current page to display */
+		String words = (String) arg;
+		
+		/* Below is the code to create a label to display as the current page */
+		Label page = new Label(words);
+		/* Wraps the text to window's size */
+		page.setWrapText(true);
+		/* Changes the wrapping nature of text to only the center of BorderPane */
+		page.setPadding(new Insets(50));
+		
+		/*
+		 * Below is the code to display the font for the current page; however, this
+		 * code is likely to change with the implementation of the settings
+		 */
+		Font font = new Font(fontType, fontSize + 16);
+		page.setFont(font);
+		
+		/* Sets the page to the center of the BorderPane */
+		border.setCenter(page);
+		/* Aligns the page starting at the top left of the center */
+		BorderPane.setAlignment(page, Pos.TOP_LEFT);
+		
+		/* Below is the code to display the current page number */
+		Text pageNum = new Text("Page " + Integer.toString(curBook.getCurPage()));
+		pageNum.setFont(Font.font(20));
+		/* Sets and aligns the page counter to the bottom center of the BorderPane */
+		border.setBottom(pageNum);
+		BorderPane.setAlignment(pageNum, Pos.BOTTOM_CENTER);
 	}
 	
 	private class Open extends Stage {
@@ -71,6 +110,11 @@ public class EReaderView extends Application implements java.util.Observer {
 				fileName = fileField.getText();
 				/* Call method from controller to open file */
 				
+				controller.openFile(fileName);
+				this.fileName = fileName;
+				controller.getBook(fileName).addObserver(EReaderView.this);
+				controller.openBook();
+				
 				this.close();
 			});
 			
@@ -90,8 +134,8 @@ public class EReaderView extends Application implements java.util.Observer {
 		
 		/* 
 		 * Below is a commented line to add the view as an observer of the model
-		 *
-		/* controller.getModel().addObserver(this); */ 
+		 */
+		
 		
 		stage.setTitle("E-Reader");
 		
@@ -161,6 +205,8 @@ public class EReaderView extends Application implements java.util.Observer {
 		 */
 		left.setOnAction(event -> {
 			/* Show previous page */
+			
+			controller.getPrev();
 		});
 		
 		left.setPadding(new Insets(15));
@@ -176,6 +222,9 @@ public class EReaderView extends Application implements java.util.Observer {
 		 */
 		right.setOnAction(event -> {
 			/* Show next page */
+			
+			controller.getNext();
+			
 		});
 		
 		right.setPadding(new Insets(15));
@@ -189,7 +238,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		 * Below sets up the current page number, feel free
 		 * to change up the way its shown
 		 */
-		Text pageNum = new Text(Integer.toString(curPage));
+		Text pageNum = new Text("Page " + Integer.toString(curPage));
 		pageNum.setFont(Font.font(20));
 		border.setBottom(pageNum);
 		BorderPane.setAlignment(pageNum, Pos.BOTTOM_CENTER);
@@ -200,7 +249,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		 */
 		this.border = border;
 		
-		Scene scene = new Scene(border, 1920, 1080);
+		Scene scene = new Scene(border, 920, 1080);
 		stage.setScene(scene);
 		stage.show();
 	}

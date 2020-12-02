@@ -3,22 +3,21 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Observable;
 import java.util.Scanner;
 
 public class EReaderModel {
 	
-	String[] bookName = {"book2.txt","book1.txt"};
 	public HashMap<String, Book> bookLibrary = new HashMap<>();
 	
-	public EReaderModel() {
-		readBook();
-	}
+	/* This field represents the current displayed book in the library */
+	private Book curBook;
+
 	         
-	public void readBook() {
-		for(int i = 0;i<bookName.length;i++) {
-			Book book = new Book(bookName[i]);
-			Library(bookName[i],book);
-		}
+	public void readBook(String bookName) {
+		Book book = new Book(bookName);
+		Library(bookName, book);
+		curBook = book;
 	}
 	
 	/**
@@ -50,6 +49,30 @@ public class EReaderModel {
 	
 	public HashMap<String, Book> getLibrary(){
 		return bookLibrary;
+	}
+	
+	/**
+	 * This method is used to interact with the current displayed book
+	 * in the library and turn its current page to the next one.
+	 */
+	public void getNextPage() {
+		curBook.nextPage();
+	}
+	
+	/**
+	 * This method is used to interact with the current displayed book
+	 * in the library and turn its current page to the previous one.
+	 */
+	public void getPrevPage() {
+		curBook.prevPage();
+	}
+	
+	/**
+	 * This method is used to interact with the current displayed book
+	 * in the library and turn its current page to the first one.
+	 */
+	public void openBook() {
+		curBook.openBook();
 	}
 }
 
