@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -17,6 +18,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -65,6 +67,8 @@ public class EReaderView extends Application implements java.util.Observer {
 		/* Changes the wrapping nature of text to only the center of BorderPane */
 		page.setPadding(new Insets(50));
 		
+		Label word = new Label("word");
+		word.setUnderline(true);
 		
 		stackCenter.getChildren().addAll(pageRect, page);
 		
