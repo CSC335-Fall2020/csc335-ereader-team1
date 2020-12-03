@@ -135,7 +135,7 @@ public class EReaderView extends Application implements java.util.Observer {
 				library.getItems().add(newBook);
 				
 				controller.getBook(fileName).addObserver(EReaderView.this);
-				controller.openBook();
+				controller.openBook(fileName);
 				
 				this.close();
 			});

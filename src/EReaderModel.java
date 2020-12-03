@@ -70,12 +70,9 @@ public class EReaderModel {
 	/**
 	 * This method is used to interact with the current displayed book
 	 * in the library and turn its current page to the first one.
+	 * 
+	 * @param fileName represents the book to open
 	 */
-	public void openBook() {
-		curBook.openBook();
-	}
-	
-	
 	public void openBook(String fileName) {
 		Book newBook = bookLibrary.get(fileName);
 		curBook = newBook;
