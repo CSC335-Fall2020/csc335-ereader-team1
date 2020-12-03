@@ -74,5 +74,12 @@ public class EReaderModel {
 	public void openBook() {
 		curBook.openBook();
 	}
+	
+	
+	public void openBook(String fileName) {
+		Book newBook = bookLibrary.get(fileName);
+		curBook = newBook;
+		curBook.openBook();
+	}
 }
 

@@ -36,6 +36,8 @@ public class EReaderView extends Application implements java.util.Observer {
 	private String fontType = "Times New Roman";
 	private int fontSize = 12;
 	
+	private Menu library;
+	
 
 	@Override
 	public void update(Observable o, Object arg) {
@@ -118,12 +120,20 @@ public class EReaderView extends Application implements java.util.Observer {
 			 * I think the name for the method in the controller to open a file
 			 * should be called "openFile"
 			 */
-			open.setOnAction(event -> {
+			open.setOnAction(openEvent -> {
 				fileName = fileField.getText();
 				/* Call method from controller to open file */
 				
 				controller.openFile(fileName);
 				this.fileName = fileName;
+				MenuItem newBook = new MenuItem(fileName);
+				
+				newBook.setOnAction(libraryEvent -> {
+					controller.openBook(fileName);
+				});
+				
+				library.getItems().add(newBook);
+				
 				controller.getBook(fileName).addObserver(EReaderView.this);
 				controller.openBook();
 				
@@ -155,6 +165,9 @@ public class EReaderView extends Application implements java.util.Observer {
 		Menu file = new Menu("File");
 		MenuItem importFile = new MenuItem("Import...");
 		file.getItems().add(importFile);
+		
+		Menu library = new Menu("Library");
+		this.library = library;
 		
 		/*
 		 * This action will open a separate window to allow 
@@ -202,6 +215,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		/* Lastly this adds the menus to the menu bar */
 		menuBar.getMenus().add(file);
 		menuBar.getMenus().add(settings);
+		menuBar.getMenus().add(library);
 		
 		/* This sets up the border pane below the menu bar */
 		BorderPane border = new BorderPane();

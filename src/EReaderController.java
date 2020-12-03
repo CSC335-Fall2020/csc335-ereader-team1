@@ -71,4 +71,8 @@ public class EReaderController {
 		model.openBook();
 	}
 	
+	public void openBook(String fileName) {
+		model.openBook(fileName);
+	}
+	
 }
