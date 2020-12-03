@@ -1,6 +1,8 @@
 import java.util.Observable;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -10,11 +12,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -38,6 +44,8 @@ public class EReaderView extends Application implements java.util.Observer {
 	private String fontType = "Times New Roman";
 	private int fontSize = 12;
 	
+	private double progress = 0;
+	
 
 	@Override
 	public void update(Observable o, Object arg) {
@@ -59,12 +67,12 @@ public class EReaderView extends Application implements java.util.Observer {
 		Rectangle pageRect = new Rectangle(800, 700, Color.WHITE);
 		
 		/* Below is the code to create a label to display as the current page */
-		Label page = new Label(words);
+		TextArea page = new TextArea(words);/////////////label///////////////
 		/* Wraps the text to window's size */
 		page.setWrapText(true);
 		/* Changes the wrapping nature of text to only the center of BorderPane */
-		page.setPadding(new Insets(50));
-		
+		page.setPadding(new Insets(35)); //////////50////////////////////////
+		page.setEditable(false);  ////////////////new//////////////	
 		
 		stackCenter.getChildren().addAll(pageRect, page);
 		
@@ -88,6 +96,43 @@ public class EReaderView extends Application implements java.util.Observer {
 		/* Sets and aligns the page counter to the bottom center of the BorderPane */
 		border.setBottom(pageNum);
 		BorderPane.setAlignment(pageNum, Pos.TOP_CENTER);
+		
+		//////////////////////////////////////////////////
+		
+		double numOfWords = 0;
+		for (int i = 0; i < curBook.lines().size(); i++) {
+			numOfWords = i;
+		}
+		
+		ProgressBar progressBar = new ProgressBar();
+
+		double nubmerOfPages = (numOfWords / 170);
+		int pageN = (int) Math.round( nubmerOfPages);
+//		System.out.println(numOfWords + ", " + pageN);
+		
+		for (int j = 1; j <= pageN; j++) {
+			System.out.println("j " + j);
+			System.out.println("pageN " + pageN);
+			if (j < pageN) {
+				progress =  (pageN / 0.1) / 100;
+				progressBar.setProgress(progress);
+				System.out.println(progress);
+			}
+			else if (j == pageN) {
+				progress = 0.1;
+				progressBar.setProgress(progress);
+			}
+		}
+		
+		
+		TilePane tileButtoms = new TilePane(Orientation.HORIZONTAL);
+		tileButtoms.setPadding(new Insets(20, 50, 20, 150));
+		tileButtoms.setHgap(150.0);
+		tileButtoms.setVgap(8.0);
+		tileButtoms.getChildren().addAll(progressBar, pageNum);
+		border.setBottom(tileButtoms);
+		//////////////////////////////////////////////////
+		
 	}
 	
 	private class Open extends Stage {
@@ -230,6 +275,16 @@ public class EReaderView extends Application implements java.util.Observer {
 		CustomMenuItem findButtonCustomMenuItem = new CustomMenuItem(findButton);
 		find.getItems().add(findButtonCustomMenuItem);
 		
+		
+		/* Below is the button that will apply these new changes */
+		Button highlightButton = new Button("Highlight");
+		highlightButton.setOnAction(event -> {
+			
+		});
+		
+		CustomMenuItem highlightButtonCustomMenuItem = new CustomMenuItem(highlightButton);
+		settings.getItems().add(highlightButtonCustomMenuItem);
+		
 		/////////////////////////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////////////////////////////////////////
 
@@ -295,7 +350,17 @@ public class EReaderView extends Application implements java.util.Observer {
 		 */
 		this.border = border;
 		
-
+		//////////////////////////////////////////////////
+		ProgressBar progressBar = new ProgressBar(0);
+        progressBar.setProgress(progress);
+        
+		TilePane tileButtoms = new TilePane(Orientation.HORIZONTAL);
+		tileButtoms.setPadding(new Insets(20, 50, 20, 150));
+		tileButtoms.setHgap(150.0);
+		tileButtoms.setVgap(8.0);
+		tileButtoms.getChildren().addAll(progressBar, pageNum);
+		border.setBottom(tileButtoms);
+		//////////////////////////////////////////////////
 
 		Scene scene = new Scene(border, 920, 1080);
 		stage.setScene(scene);
