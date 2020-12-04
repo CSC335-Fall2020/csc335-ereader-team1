@@ -70,5 +70,12 @@ public class EReaderController {
 	public void openBook() {
 		model.openBook();
 	}
+	/**
+	 * check if the book found or not 
+	 * @return return true if the book is spelled wrong and not valid 
+	 */
+	public boolean bookNotFoundss() {//////////////////
+		return model.bookNotFounds();
+	}
 	
 }

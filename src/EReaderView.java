@@ -148,8 +148,13 @@ public class EReaderView extends Application implements java.util.Observer {
 			open.setOnAction(event -> {
 				fileName = fileField.getText();
 				/* Call method from controller to open file */
-				
+
 				controller.openFile(fileName);
+				
+				if (controller.bookNotFoundss() == true) { //////// to check if the book is right
+					erorr(null);
+				}
+				
 				this.fileName = fileName;
 				controller.getBook(fileName).addObserver(EReaderView.this);
 				controller.openBook();

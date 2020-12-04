@@ -21,6 +21,7 @@ public class Book extends Observable {
 	/* Field that represents how many words are on a page */
 	private int wordsOnPage = 150;
 	
+	private boolean bookNotFound;////////////////
 
 	/**
 	 * 
@@ -47,9 +48,18 @@ public class Book extends Observable {
 			}
 			myReader.close();
 		} catch (FileNotFoundException e) {
+			this.bookNotFound = true;/////////////////////
 			System.out.println("Error");
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * check if the book found or not 
+	 * @return return true if the book is spelled wrong and not valid 
+	 */
+	public boolean bookNotFound() {////////////////////////////
+		return this.bookNotFound;
 	}
 
 	public ArrayList<String> lines() {
