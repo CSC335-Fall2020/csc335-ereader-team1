@@ -63,6 +63,7 @@ public class Book extends Observable {
 		
 		/* This string holds the words for the first page of the book */
 		String firstPage = "";
+		curIndex = 0;
 		
 		/*
 		 * Checks the size of the book in order to change the amount of
@@ -85,7 +86,7 @@ public class Book extends Observable {
 			firstPage += words.get(i) + " ";
 		}
 		/* Displays that the current first page is 1 */
-		curPage += 1;
+		curPage = 1;
 		
 		/* Updates the view accordingly */
 		setChanged();

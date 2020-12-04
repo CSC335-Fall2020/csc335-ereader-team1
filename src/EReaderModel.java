@@ -74,9 +74,17 @@ public class EReaderModel {
 	 * @param fileName represents the book to open
 	 */
 	public void openBook(String fileName) {
-		Book newBook = bookLibrary.get(fileName);
-		curBook = newBook;
-		curBook.openBook();
+		
+		if (bookLibrary.containsKey(fileName)) {
+			Book newBook = bookLibrary.get(fileName);
+			curBook = newBook;
+			curBook.openBook();
+		} else {
+			Book newBook = new Book(fileName);
+			bookLibrary.put(fileName, newBook);
+			curBook = newBook;
+			curBook.openBook();
+		}
 	}
 }
 
