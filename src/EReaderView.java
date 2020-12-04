@@ -1,11 +1,13 @@
 import java.util.Observable;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
@@ -15,6 +17,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -71,7 +74,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		/* Wraps the text to window's size */
 		page.setWrapText(true);
 		/* Changes the wrapping nature of text to only the center of BorderPane */
-		page.setPadding(new Insets(35)); //////////50////////////////////////
+		page.setPadding(new Insets(50)); 
 		page.setEditable(false);  ////////////////new//////////////	
 		
 		stackCenter.getChildren().addAll(pageRect, page);
@@ -97,33 +100,10 @@ public class EReaderView extends Application implements java.util.Observer {
 		border.setBottom(pageNum);
 		BorderPane.setAlignment(pageNum, Pos.TOP_CENTER);
 		
-		//////////////////////////////////////////////////
-		
-		double numOfWords = 0;
-		for (int i = 0; i < curBook.lines().size(); i++) {
-			numOfWords = i;
-		}
-		
+		////////////////////////progress bar//////////////////////////
 		ProgressBar progressBar = new ProgressBar();
-
-		double nubmerOfPages = (numOfWords / 170);
-		int pageN = (int) Math.round( nubmerOfPages);
-//		System.out.println(numOfWords + ", " + pageN);
-		
-		for (int j = 1; j <= pageN; j++) {
-			System.out.println("j " + j);
-			System.out.println("pageN " + pageN);
-			if (j < pageN) {
-				progress =  (pageN / 0.1) / 100;
-				progressBar.setProgress(progress);
-				System.out.println(progress);
-			}
-			else if (j == pageN) {
-				progress = 0.1;
-				progressBar.setProgress(progress);
-			}
-		}
-		
+		progress = 0.1;
+		progressBar.setProgress(progress);
 		
 		TilePane tileButtoms = new TilePane(Orientation.HORIZONTAL);
 		tileButtoms.setPadding(new Insets(20, 50, 20, 150));
@@ -193,7 +173,6 @@ public class EReaderView extends Application implements java.util.Observer {
 		 * Below is a commented line to add the view as an observer of the model
 		 */
 		
-		
 		stage.setTitle("E-Reader");
 		
 		MenuBar menuBar = new MenuBar();
@@ -211,6 +190,17 @@ public class EReaderView extends Application implements java.util.Observer {
 			Open openFile = new Open();
 			openFile.showAndWait();
 		});
+		
+		///////////////////////////////////////////
+		/* Below is the button that will save */
+		Button savetButton = new Button("Save");
+		savetButton.setOnAction(event -> {
+			
+		});
+		
+		CustomMenuItem saveButtonCustomMenuItem = new CustomMenuItem(savetButton);
+		file.getItems().add(saveButtonCustomMenuItem);
+		///////////////////////////////////////////
 		
 		/* This menu option will allow a user to change the font and font size */
 		Menu settings = new Menu("Settings");
@@ -349,22 +339,23 @@ public class EReaderView extends Application implements java.util.Observer {
 		 * in the update
 		 */
 		this.border = border;
-		
-		//////////////////////////////////////////////////
-		ProgressBar progressBar = new ProgressBar(0);
-        progressBar.setProgress(progress);
-        
-		TilePane tileButtoms = new TilePane(Orientation.HORIZONTAL);
-		tileButtoms.setPadding(new Insets(20, 50, 20, 150));
-		tileButtoms.setHgap(150.0);
-		tileButtoms.setVgap(8.0);
-		tileButtoms.getChildren().addAll(progressBar, pageNum);
-		border.setBottom(tileButtoms);
-		//////////////////////////////////////////////////
 
 		Scene scene = new Scene(border, 920, 1080);
 		stage.setScene(scene);
 		stage.show();
+	}
+	
+	/**
+	 * this method will control the error message if book is not found or spilled wrong
+	 * @param ActionEvent e action event
+	 */
+	public void erorr(ActionEvent e) {
+		Alert alert = new Alert(AlertType.NONE);
+        // set alert type to be an error
+		alert.setAlertType(AlertType.ERROR); 
+		alert.setContentText("Book not found, check the spelling of the book!");
+        // show and wait
+		alert.showAndWait();    
 	}
 
 

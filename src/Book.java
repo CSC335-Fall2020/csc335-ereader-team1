@@ -19,7 +19,8 @@ public class Book extends Observable {
 	private int curIndex = 0;
 	
 	/* Field that represents how many words are on a page */
-	private int wordsOnPage = 170;
+	private int wordsOnPage = 150;
+	
 
 	/**
 	 * 
