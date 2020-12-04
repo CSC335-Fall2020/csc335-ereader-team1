@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -92,6 +93,12 @@ public class EReaderView extends Application implements java.util.Observer {
 		/* Sets and aligns the page counter to the bottom center of the BorderPane */
 		border.setBottom(pageNum);
 		BorderPane.setAlignment(pageNum, Pos.TOP_CENTER);
+		
+		ProgressBar progress = new ProgressBar();
+		border.setBottom(progress);
+		BorderPane.setAlignment(progress, Pos.BOTTOM_LEFT);
+		System.out.println(controller.getProgress());
+		progress.setProgress(controller.getProgress());
 	}
 	
 	private class Open extends Stage {
@@ -271,10 +278,13 @@ public class EReaderView extends Application implements java.util.Observer {
 		border.setBottom(pageNum);
 		BorderPane.setAlignment(pageNum, Pos.BOTTOM_CENTER);
 		
-		
 		Rectangle pageRect = new Rectangle(800, 700, Color.LIGHTGRAY);
 		border.setCenter(pageRect);
 		BorderPane.setAlignment(pageRect, Pos.CENTER);
+		
+		ProgressBar progress = new ProgressBar();
+		border.setBottom(progress);
+		BorderPane.setAlignment(progress, Pos.BOTTOM_LEFT);
 		
 		/* 
 		 * Stores the border pane as a private field to be used

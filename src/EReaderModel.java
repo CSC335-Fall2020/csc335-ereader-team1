@@ -86,5 +86,9 @@ public class EReaderModel {
 			curBook.openBook();
 		}
 	}
+	
+	public double getProgress() {
+		return curBook.getProgress();
+	}
 }
 

@@ -73,4 +73,8 @@ public class EReaderController {
 		model.openBook(fileName);
 	}
 	
+	public double getProgress() {
+		return model.getProgress();
+	}
+	
 }

@@ -20,6 +20,8 @@ public class Book extends Observable {
 	
 	/* Field that represents how many words are on a page */
 	private int wordsOnPage = 170;
+	
+	private double progress = 0;
 
 	/**
 	 * 
@@ -55,6 +57,10 @@ public class Book extends Observable {
 		return words;
 	}
 	
+	public double getProgress() {
+		return progress;
+	}
+	
 	/**
 	 * This method opens the current book to the first page in the
 	 * book.
@@ -64,6 +70,7 @@ public class Book extends Observable {
 		/* This string holds the words for the first page of the book */
 		String firstPage = "";
 		curIndex = 0;
+		double incriment = ((double) wordsOnPage) / words.size();
 		
 		/*
 		 * Checks the size of the book in order to change the amount of
@@ -88,6 +95,7 @@ public class Book extends Observable {
 		/* Displays that the current first page is 1 */
 		curPage = 1;
 		
+		progress = incriment;
 		/* Updates the view accordingly */
 		setChanged();
 		notifyObservers(firstPage);
@@ -102,6 +110,7 @@ public class Book extends Observable {
 		
 		/* This string represents the previous page of words */
 		String nextPage = "";
+		double incriment = ((double) wordsOnPage) / words.size();
 		
 		/* This index represents the next pages first words index */
 		int wordIndex = wordsOnPage + 1;
@@ -132,6 +141,9 @@ public class Book extends Observable {
 			/* Adds the next word to the next page string */
 			nextPage += words.get(i) + " ";
 		}
+		progress += incriment;
+		System.out.println("yes" + incriment);
+		
 		/* Updates the view accordingly */
 		setChanged();
 		notifyObservers(nextPage);
@@ -146,6 +158,7 @@ public class Book extends Observable {
 		
 		/* This string represents the previous page of words */
 		String prevPage = "";
+		double incriment = ((double) wordsOnPage) / words.size();
 		
 		/* This index represents the previous pages first words index */
 		int wordIndex = wordsOnPage + 1;
@@ -172,6 +185,7 @@ public class Book extends Observable {
 			/* Adds the next word to the previous page string */		
 			prevPage += words.get(i) + " ";
 		}
+		progress -= incriment;
 		/* Updates the view accordingly */
 		setChanged();
 		notifyObservers(prevPage);
