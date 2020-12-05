@@ -50,6 +50,8 @@ public class EReaderView extends Application implements java.util.Observer {
 	
 	private double progress = 0;
 	
+	private Menu library;
+	
 
 	@Override
 	public void update(Observable o, Object arg) {
@@ -104,7 +106,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		////////////////////////progress bar//////////////////////////
 		ProgressBar progressBar = new ProgressBar();
 		progress = 0.1;
-		progressBar.setProgress(progress);
+		progressBar.setProgress(controller.getProgress());
 		
 		TilePane tileButtoms = new TilePane(Orientation.HORIZONTAL);
 		tileButtoms.setPadding(new Insets(20, 50, 20, 150));
@@ -159,6 +161,13 @@ public class EReaderView extends Application implements java.util.Observer {
 				this.fileName = fileName;
 				controller.getBook(fileName).addObserver(EReaderView.this);
 				controller.openBook(fileName);
+				
+				MenuItem newBook = new MenuItem(fileName);
+				library.getItems().add(newBook);
+				
+				newBook.setOnAction(libraryEvent -> {
+					controller.openBook(fileName);
+				});
 				
 				this.close();
 			});
@@ -242,9 +251,13 @@ public class EReaderView extends Application implements java.util.Observer {
 		CustomMenuItem applyButton = new CustomMenuItem(apply);
 		settings.getItems().add(applyButton);
 		
+		Menu library = new Menu("Library");
+		this.library = library;
+		
 		/* Lastly this adds the menus to the menu bar */
 		menuBar.getMenus().add(file);
 		menuBar.getMenus().add(settings);
+		menuBar.getMenus().add(library);
 		
 		/////////////////////////////////////////////////////////////////////////////////
 		// adding the find field under this are
