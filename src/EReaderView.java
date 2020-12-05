@@ -156,6 +156,8 @@ public class EReaderView extends Application implements java.util.Observer {
 				
 				if (controller.bookNotFoundss() == true) { //////// to check if the book is right
 					erorr(null);
+					this.close();
+					return;
 				}
 				
 				this.fileName = fileName;

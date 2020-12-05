@@ -94,7 +94,7 @@ public class Book extends Observable {
 		 * This for loop iterates over the first page of words in the book
 		 * until it reaches the index of the first word on the next page
 		 */
-		for (int i = bookmark; i < wordIndex; i++) {
+		for (int i = bookmark; i < wordIndex + bookmark; i++) {
 			
 			/* Adds to current word to the first page string */
 			firstPage += words.get(i) + " ";
@@ -149,7 +149,7 @@ public class Book extends Observable {
 			nextPage += words.get(i) + " ";
 		}
 		
-		if (progress <= 1) {
+		if (progress < 1) {
 			progress += incriment;
 		}
 			
