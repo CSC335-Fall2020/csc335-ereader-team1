@@ -626,4 +626,7 @@ We needed a destructive force we could direct.  Needed to turn third-party liabi
 
 With that in mind, I’d set course straight for the Simurgh.  We’d talk to her or we’d kill her.
 
+<<<<<<< HEAD
 Tattletale started the video, and I watched.
+=======
+>>>>>>> refs/remotes/origin/sultanBranch

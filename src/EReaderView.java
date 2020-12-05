@@ -1,8 +1,14 @@
 import java.util.Observable;
+
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
@@ -12,14 +18,17 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -39,7 +48,7 @@ public class EReaderView extends Application implements java.util.Observer {
 	private String fontType = "Times New Roman";
 	private int fontSize = 12;
 	
-	private Menu library;
+	private double progress = 0;
 	
 
 	@Override
@@ -59,17 +68,15 @@ public class EReaderView extends Application implements java.util.Observer {
 		 */
 		StackPane stackCenter = new StackPane();
 		
-		Rectangle pageRect = new Rectangle(800, 700, Color.LIGHTGRAY);
+		Rectangle pageRect = new Rectangle(800, 700, Color.WHITE);
 		
 		/* Below is the code to create a label to display as the current page */
-		Label page = new Label(words);
+		TextArea page = new TextArea(words);/////////////label///////////////
 		/* Wraps the text to window's size */
 		page.setWrapText(true);
 		/* Changes the wrapping nature of text to only the center of BorderPane */
-		page.setPadding(new Insets(50));
-		
-		Label word = new Label("word");
-		word.setUnderline(true);
+		page.setPadding(new Insets(50)); 
+		page.setEditable(false);  ////////////////new//////////////	
 		
 		stackCenter.getChildren().addAll(pageRect, page);
 		
@@ -79,7 +86,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		 * Below is the code to display the font for the current page; however, this
 		 * code is likely to change with the implementation of the settings
 		 */
-		Font font = new Font(fontType, fontSize + 12);
+		Font font = new Font(fontType, fontSize + 16);
 		page.setFont(font);
 		
 		/* Sets the page to the center of the BorderPane */
@@ -94,11 +101,19 @@ public class EReaderView extends Application implements java.util.Observer {
 		border.setBottom(pageNum);
 		BorderPane.setAlignment(pageNum, Pos.TOP_CENTER);
 		
-		ProgressBar progress = new ProgressBar();
-		border.setBottom(progress);
-		BorderPane.setAlignment(progress, Pos.BOTTOM_LEFT);
-		System.out.println(controller.getProgress());
-		progress.setProgress(controller.getProgress());
+		////////////////////////progress bar//////////////////////////
+		ProgressBar progressBar = new ProgressBar();
+		progress = 0.1;
+		progressBar.setProgress(progress);
+		
+		TilePane tileButtoms = new TilePane(Orientation.HORIZONTAL);
+		tileButtoms.setPadding(new Insets(20, 50, 20, 150));
+		tileButtoms.setHgap(150.0);
+		tileButtoms.setVgap(8.0);
+		tileButtoms.getChildren().addAll(progressBar, pageNum);
+		border.setBottom(tileButtoms);
+		//////////////////////////////////////////////////
+		
 	}
 	
 	private class Open extends Stage {
@@ -131,20 +146,17 @@ public class EReaderView extends Application implements java.util.Observer {
 			 * I think the name for the method in the controller to open a file
 			 * should be called "openFile"
 			 */
-			open.setOnAction(openEvent -> {
+			open.setOnAction(event -> {
 				fileName = fileField.getText();
 				/* Call method from controller to open file */
-				
+
 				controller.openFile(fileName);
+				
+				if (controller.bookNotFoundss() == true) { //////// to check if the book is right
+					erorr(null);
+				}
+				
 				this.fileName = fileName;
-				MenuItem newBook = new MenuItem(fileName);
-				
-				newBook.setOnAction(libraryEvent -> {
-					controller.openBook(fileName);
-				});
-				
-				library.getItems().add(newBook);
-				
 				controller.getBook(fileName).addObserver(EReaderView.this);
 				controller.openBook(fileName);
 				
@@ -167,7 +179,6 @@ public class EReaderView extends Application implements java.util.Observer {
 		 * Below is a commented line to add the view as an observer of the model
 		 */
 		
-		
 		stage.setTitle("E-Reader");
 		
 		MenuBar menuBar = new MenuBar();
@@ -177,9 +188,6 @@ public class EReaderView extends Application implements java.util.Observer {
 		MenuItem importFile = new MenuItem("Import...");
 		file.getItems().add(importFile);
 		
-		Menu library = new Menu("Library");
-		this.library = library;
-		
 		/*
 		 * This action will open a separate window to allow 
 		 * for a user to open a file 
@@ -188,6 +196,17 @@ public class EReaderView extends Application implements java.util.Observer {
 			Open openFile = new Open();
 			openFile.showAndWait();
 		});
+		
+		///////////////////////////////////////////
+		/* Below is the button that will save */
+		Button savetButton = new Button("Save");
+		savetButton.setOnAction(event -> {
+			
+		});
+		
+		CustomMenuItem saveButtonCustomMenuItem = new CustomMenuItem(savetButton);
+		file.getItems().add(saveButtonCustomMenuItem);
+		///////////////////////////////////////////
 		
 		/* This menu option will allow a user to change the font and font size */
 		Menu settings = new Menu("Settings");
@@ -226,7 +245,45 @@ public class EReaderView extends Application implements java.util.Observer {
 		/* Lastly this adds the menus to the menu bar */
 		menuBar.getMenus().add(file);
 		menuBar.getMenus().add(settings);
-		menuBar.getMenus().add(library);
+		
+		/////////////////////////////////////////////////////////////////////////////////
+		// adding the find field under this are
+		/////////////////////////////////////////////////////////////////////////////////
+		/* This menu option will allow a user to find the word */
+		Menu find = new Menu("Find");
+		
+		Text find_here = new Text("Find");
+		TextField findField = new TextField();
+		
+		HBox findHBox = new HBox(10, find_here, findField);
+		fontHBox.setAlignment(Pos.BASELINE_CENTER);
+		
+		CustomMenuItem findCustomMenuItem = new CustomMenuItem(findHBox);
+		find.getItems().add(findCustomMenuItem);
+		menuBar.getMenus().add(find);
+		
+		/* Below is the button that will apply these new changes */
+		Button findButton = new Button("Find");
+		findButton.setOnAction(event -> {
+			
+		});
+		
+		CustomMenuItem findButtonCustomMenuItem = new CustomMenuItem(findButton);
+		find.getItems().add(findButtonCustomMenuItem);
+		
+		
+		/* Below is the button that will apply these new changes */
+		Button highlightButton = new Button("Highlight");
+		highlightButton.setOnAction(event -> {
+			
+		});
+		
+		CustomMenuItem highlightButtonCustomMenuItem = new CustomMenuItem(highlightButton);
+		settings.getItems().add(highlightButtonCustomMenuItem);
+		
+		/////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////
+
 		
 		/* This sets up the border pane below the menu bar */
 		BorderPane border = new BorderPane();
@@ -278,23 +335,33 @@ public class EReaderView extends Application implements java.util.Observer {
 		border.setBottom(pageNum);
 		BorderPane.setAlignment(pageNum, Pos.BOTTOM_CENTER);
 		
-		Rectangle pageRect = new Rectangle(800, 700, Color.LIGHTGRAY);
+		
+		Rectangle pageRect = new Rectangle(800, 700, Color.WHITE);
 		border.setCenter(pageRect);
 		BorderPane.setAlignment(pageRect, Pos.CENTER);
-		
-		ProgressBar progress = new ProgressBar();
-		border.setBottom(progress);
-		BorderPane.setAlignment(progress, Pos.BOTTOM_LEFT);
 		
 		/* 
 		 * Stores the border pane as a private field to be used
 		 * in the update
 		 */
 		this.border = border;
-		
+
 		Scene scene = new Scene(border, 920, 1080);
 		stage.setScene(scene);
 		stage.show();
+	}
+	
+	/**
+	 * this method will control the error message if book is not found or spilled wrong
+	 * @param ActionEvent e action event
+	 */
+	public void erorr(ActionEvent e) {
+		Alert alert = new Alert(AlertType.NONE);
+        // set alert type to be an error
+		alert.setAlertType(AlertType.ERROR); 
+		alert.setContentText("Book not found, check the spelling of the book!");
+        // show and wait
+		alert.showAndWait();    
 	}
 
 }

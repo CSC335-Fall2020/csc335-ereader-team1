@@ -77,4 +77,12 @@ public class EReaderController {
 		return model.getProgress();
 	}
 	
+	/**
+	 * check if the book found or not 
+	 * @return return true if the book is spelled wrong and not valid 
+	 */
+	public boolean bookNotFoundss() {//////////////////
+		return model.bookNotFounds();
+	}
+	
 }
