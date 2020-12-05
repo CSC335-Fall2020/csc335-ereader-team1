@@ -1,3 +1,9 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Observable;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -33,9 +39,10 @@ public class EReaderView extends Application implements java.util.Observer {
 	private BorderPane border;
 	
 	/* Font settings */
-	private String fontType = "Times New Roman";
-	private int fontSize = 12;
+	private String fontType;
+	private int fontSize;
 	
+	private HashMap<String, String> settings;
 
 	@Override
 	public void update(Observable o, Object arg) {
@@ -146,6 +153,8 @@ public class EReaderView extends Application implements java.util.Observer {
 		 * Below is a commented line to add the view as an observer of the model
 		 */
 		
+		loadSettings();
+		
 		
 		stage.setTitle("E-Reader");
 		
@@ -192,8 +201,8 @@ public class EReaderView extends Application implements java.util.Observer {
 		/* Below is the button that will apply these new changes */
 		Button apply = new Button("Apply");
 		apply.setOnAction(event -> {
-			this.fontSize = Integer.parseInt(fontSizeField.getText());
-			this.fontType = fontField.getText();
+			fontSize = Integer.parseInt(fontSizeField.getText());
+			fontType = fontField.getText();
 		});
 		
 		CustomMenuItem applyButton = new CustomMenuItem(apply);
@@ -267,6 +276,34 @@ public class EReaderView extends Application implements java.util.Observer {
 		Scene scene = new Scene(border, 920, 1080);
 		stage.setScene(scene);
 		stage.show();
+	}
+	
+	private void loadSettings() throws FileNotFoundException, IOException {
+		this.settings = new HashMap<String, String>();
+		try(BufferedReader bufferedReader = new BufferedReader(new FileReader("Settings.txt"))) {
+			String line = bufferedReader.readLine();
+			while(line != null) {
+				String[] setting = line.split(",");
+				settings.put(setting[0], setting[1]);
+			}
+		} catch (FileNotFoundException e) {
+			File newSetting = new File("Settings.txt");
+			newSetting.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if(settings.containsKey("fontType")) {
+			this.fontType = settings.get("fontType");
+		} else {
+			this.fontType = "Times New Roman";
+			settings.put("fontType", "Times New Roman");
+		}
+		if(settings.containsKey("fontSize")) {
+			this.fontSize = Integer.valueOf(settings.get("fontSize"));
+		} else {
+			this.fontSize = 12;
+			settings.put("fontSize", "12");
+		}
 	}
 
 }
