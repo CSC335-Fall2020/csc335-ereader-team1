@@ -257,12 +257,12 @@ public class EReaderView extends Application implements java.util.Observer {
 		CustomMenuItem fontSizeBox = new CustomMenuItem(fontSizeHBox);
 		settings.getItems().add(fontSizeBox);
 		
-		CheckBox modeField = new CheckBox("Dark Mode");
-		HBox modeHBox = new HBox(10, modeField);
-		modeHBox.setAlignment(Pos.BASELINE_CENTER);
+		//CheckBox modeField = new CheckBox("Dark Mode");
+		//HBox modeHBox = new HBox(10, modeField);
+		//modeHBox.setAlignment(Pos.BASELINE_CENTER);
 		
-		CustomMenuItem modeBox = new CustomMenuItem(modeHBox);
-		settings.getItems().add(modeBox);
+		//CustomMenuItem modeBox = new CustomMenuItem(modeHBox);
+		//settings.getItems().add(modeBox);
 		
 		/* Below is the button that will apply these new changes */
 		Button apply = new Button("Apply");
@@ -271,11 +271,13 @@ public class EReaderView extends Application implements java.util.Observer {
 			settingMap.put("fontSize", String.valueOf(fontSize));
 			fontType = fontField.getText();
 			settingMap.put("fontType", fontType);
-			if(modeField.isSelected()) {
-				settingMap.put("displayMode", "0");
-			} else {
-				settingMap.put("displayMode", "1");
-			}
+			//if(modeField.isSelected()) {
+			//	settingMap.put("displayMode", "0");
+			//	mode = 0;
+			//} else {
+			//	settingMap.put("displayMode", "1");
+			//	mode = 1;
+			//}
 			writeSettings();
 		});
 		
@@ -395,17 +397,23 @@ public class EReaderView extends Application implements java.util.Observer {
 		stage.show();
 	}
 	
-	private void loadSettings() throws FileNotFoundException, IOException {
+	private void loadSettings() throws Exception {
 		this.settingMap = new HashMap<String, String>();
-		try(BufferedReader bufferedReader = new BufferedReader(new FileReader("Settings.txt"))) {
+		try {
+			BufferedReader bufferedReader = new BufferedReader(new FileReader("Settings.txt"));
 			String line = bufferedReader.readLine();
 			while(line != null) {
 				String[] setting = line.split(",");
 				settingMap.put(setting[0], setting[1]);
 			}
-		} catch (FileNotFoundException e) {
-			File newSetting = new File("Settings.txt");
-			newSetting.createNewFile();
+			bufferedReader.close();
+		} catch (FileNotFoundException f) {
+			try {
+				File newSetting = new File("Settings.txt");
+				newSetting.createNewFile();
+			} catch (IOException g){
+				g.printStackTrace();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -431,12 +439,14 @@ public class EReaderView extends Application implements java.util.Observer {
 	}
 	
 	private void writeSettings() {
-		try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("Settings.txt"))) {
+		try {
+			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("Settings.txt"));
 			String newSettings = "";
 			for(String x : settingMap.keySet()) {
 				newSettings += x + "," + settingMap.get(x) + "\n";
 			}
 			bufferedWriter.write(newSettings);
+			bufferedWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
