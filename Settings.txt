@@ -1,0 +1,3 @@
+fontType,Times New Roman
+fontSize,12
+displayMode,1

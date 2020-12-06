@@ -1,25 +1,40 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Observable;
+
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -42,7 +57,13 @@ public class EReaderView extends Application implements java.util.Observer {
 	private String fontType;
 	private int fontSize;
 	
-	private HashMap<String, String> settings;
+	private HashMap<String, String> settingMap;
+
+	private double progress = 0;
+	
+	private Menu library;
+
+	private int mode;
 
 	@Override
 	public void update(Observable o, Object arg) {
@@ -61,15 +82,15 @@ public class EReaderView extends Application implements java.util.Observer {
 		 */
 		StackPane stackCenter = new StackPane();
 		
-		Rectangle pageRect = new Rectangle(800, 700, Color.LIGHTGRAY);
+		Rectangle pageRect = new Rectangle(800, 700, Color.WHITE);
 		
 		/* Below is the code to create a label to display as the current page */
-		Label page = new Label(words);
+		TextArea page = new TextArea(words);/////////////label///////////////
 		/* Wraps the text to window's size */
 		page.setWrapText(true);
 		/* Changes the wrapping nature of text to only the center of BorderPane */
-		page.setPadding(new Insets(50));
-		
+		page.setPadding(new Insets(50)); 
+		page.setEditable(false);  ////////////////new//////////////	
 		
 		stackCenter.getChildren().addAll(pageRect, page);
 		
@@ -79,7 +100,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		 * Below is the code to display the font for the current page; however, this
 		 * code is likely to change with the implementation of the settings
 		 */
-		Font font = new Font(fontType, fontSize + 12);
+		Font font = new Font(fontType, fontSize + 16);
 		page.setFont(font);
 		
 		/* Sets the page to the center of the BorderPane */
@@ -93,6 +114,20 @@ public class EReaderView extends Application implements java.util.Observer {
 		/* Sets and aligns the page counter to the bottom center of the BorderPane */
 		border.setBottom(pageNum);
 		BorderPane.setAlignment(pageNum, Pos.TOP_CENTER);
+		
+		////////////////////////progress bar//////////////////////////
+		ProgressBar progressBar = new ProgressBar();
+		progress = 0.1;
+		progressBar.setProgress(controller.getProgress());
+		
+		TilePane tileButtoms = new TilePane(Orientation.HORIZONTAL);
+		tileButtoms.setPadding(new Insets(20, 50, 20, 150));
+		tileButtoms.setHgap(150.0);
+		tileButtoms.setVgap(8.0);
+		tileButtoms.getChildren().addAll(progressBar, pageNum);
+		border.setBottom(tileButtoms);
+		//////////////////////////////////////////////////
+		
 	}
 	
 	private class Open extends Stage {
@@ -128,11 +163,25 @@ public class EReaderView extends Application implements java.util.Observer {
 			open.setOnAction(event -> {
 				fileName = fileField.getText();
 				/* Call method from controller to open file */
-				
+
 				controller.openFile(fileName);
+				
+				if (controller.bookNotFoundss() == true) { //////// to check if the book is right
+					erorr(null);
+					this.close();
+					return;
+				}
+				
 				this.fileName = fileName;
 				controller.getBook(fileName).addObserver(EReaderView.this);
-				controller.openBook();
+				controller.openBook(fileName);
+				
+				MenuItem newBook = new MenuItem(fileName);
+				library.getItems().add(newBook);
+				
+				newBook.setOnAction(libraryEvent -> {
+					controller.openBook(fileName);
+				});
 				
 				this.close();
 			});
@@ -155,7 +204,6 @@ public class EReaderView extends Application implements java.util.Observer {
 		
 		loadSettings();
 		
-		
 		stage.setTitle("E-Reader");
 		
 		MenuBar menuBar = new MenuBar();
@@ -173,6 +221,17 @@ public class EReaderView extends Application implements java.util.Observer {
 			Open openFile = new Open();
 			openFile.showAndWait();
 		});
+		
+		///////////////////////////////////////////
+		/* Below is the button that will save */
+		Button savetButton = new Button("Save");
+		savetButton.setOnAction(event -> {
+			
+		});
+		
+		CustomMenuItem saveButtonCustomMenuItem = new CustomMenuItem(savetButton);
+		file.getItems().add(saveButtonCustomMenuItem);
+		///////////////////////////////////////////
 		
 		/* This menu option will allow a user to change the font and font size */
 		Menu settings = new Menu("Settings");
@@ -198,19 +257,77 @@ public class EReaderView extends Application implements java.util.Observer {
 		CustomMenuItem fontSizeBox = new CustomMenuItem(fontSizeHBox);
 		settings.getItems().add(fontSizeBox);
 		
+		CheckBox modeField = new CheckBox("Dark Mode");
+		HBox modeHBox = new HBox(10, modeField);
+		modeHBox.setAlignment(Pos.BASELINE_CENTER);
+		
+		CustomMenuItem modeBox = new CustomMenuItem(modeHBox);
+		settings.getItems().add(modeBox);
+		
 		/* Below is the button that will apply these new changes */
 		Button apply = new Button("Apply");
 		apply.setOnAction(event -> {
 			fontSize = Integer.parseInt(fontSizeField.getText());
+			settingMap.put("fontSize", String.valueOf(fontSize));
 			fontType = fontField.getText();
+			settingMap.put("fontType", fontType);
+			if(modeField.isSelected()) {
+				settingMap.put("displayMode", "0");
+			} else {
+				settingMap.put("displayMode", "1");
+			}
+			writeSettings();
 		});
 		
 		CustomMenuItem applyButton = new CustomMenuItem(apply);
 		settings.getItems().add(applyButton);
 		
+		Menu library = new Menu("Library");
+		this.library = library;
+		
 		/* Lastly this adds the menus to the menu bar */
 		menuBar.getMenus().add(file);
 		menuBar.getMenus().add(settings);
+		menuBar.getMenus().add(library);
+		
+		/////////////////////////////////////////////////////////////////////////////////
+		// adding the find field under this are
+		/////////////////////////////////////////////////////////////////////////////////
+		/* This menu option will allow a user to find the word */
+		Menu find = new Menu("Find");
+		
+		Text find_here = new Text("Find");
+		TextField findField = new TextField();
+		
+		HBox findHBox = new HBox(10, find_here, findField);
+		fontHBox.setAlignment(Pos.BASELINE_CENTER);
+		
+		CustomMenuItem findCustomMenuItem = new CustomMenuItem(findHBox);
+		find.getItems().add(findCustomMenuItem);
+		menuBar.getMenus().add(find);
+		
+		/* Below is the button that will apply these new changes */
+		Button findButton = new Button("Find");
+		findButton.setOnAction(event -> {
+			
+		});
+		
+		CustomMenuItem findButtonCustomMenuItem = new CustomMenuItem(findButton);
+		find.getItems().add(findButtonCustomMenuItem);
+		
+		
+		/* Below is the button that will apply these new changes */
+		Button highlightButton = new Button("Highlight");
+		highlightButton.setOnAction(event -> {
+			
+		});
+		
+		CustomMenuItem highlightButtonCustomMenuItem = new CustomMenuItem(highlightButton);
+		settings.getItems().add(highlightButtonCustomMenuItem);
+		
+		/////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////
+
 		
 		/* This sets up the border pane below the menu bar */
 		BorderPane border = new BorderPane();
@@ -263,7 +380,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		BorderPane.setAlignment(pageNum, Pos.BOTTOM_CENTER);
 		
 		
-		Rectangle pageRect = new Rectangle(800, 700, Color.LIGHTGRAY);
+		Rectangle pageRect = new Rectangle(800, 700, Color.WHITE);
 		border.setCenter(pageRect);
 		BorderPane.setAlignment(pageRect, Pos.CENTER);
 		
@@ -272,19 +389,19 @@ public class EReaderView extends Application implements java.util.Observer {
 		 * in the update
 		 */
 		this.border = border;
-		
+
 		Scene scene = new Scene(border, 920, 1080);
 		stage.setScene(scene);
 		stage.show();
 	}
 	
 	private void loadSettings() throws FileNotFoundException, IOException {
-		this.settings = new HashMap<String, String>();
+		this.settingMap = new HashMap<String, String>();
 		try(BufferedReader bufferedReader = new BufferedReader(new FileReader("Settings.txt"))) {
 			String line = bufferedReader.readLine();
 			while(line != null) {
 				String[] setting = line.split(",");
-				settings.put(setting[0], setting[1]);
+				settingMap.put(setting[0], setting[1]);
 			}
 		} catch (FileNotFoundException e) {
 			File newSetting = new File("Settings.txt");
@@ -292,18 +409,49 @@ public class EReaderView extends Application implements java.util.Observer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if(settings.containsKey("fontType")) {
-			this.fontType = settings.get("fontType");
+		if(settingMap.containsKey("fontType")) {
+			this.fontType = settingMap.get("fontType");
 		} else {
 			this.fontType = "Times New Roman";
-			settings.put("fontType", "Times New Roman");
+			settingMap.put("fontType", "Times New Roman");
 		}
-		if(settings.containsKey("fontSize")) {
-			this.fontSize = Integer.valueOf(settings.get("fontSize"));
+		if(settingMap.containsKey("fontSize")) {
+			this.fontSize = Integer.valueOf(settingMap.get("fontSize"));
 		} else {
 			this.fontSize = 12;
-			settings.put("fontSize", "12");
+			settingMap.put("fontSize", "12");
 		}
+		if(settingMap.containsKey("displayMode")) {
+			this.mode = Integer.valueOf(settingMap.get("displayMode"));
+		} else {
+			this.mode = 1;
+			settingMap.put("displayMode", "1");
+		}
+		writeSettings();
+	}
+	
+	private void writeSettings() {
+		try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("Settings.txt"))) {
+			String newSettings = "";
+			for(String x : settingMap.keySet()) {
+				newSettings += x + "," + settingMap.get(x) + "\n";
+			}
+			bufferedWriter.write(newSettings);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * this method will control the error message if book is not found or spilled wrong
+	 * @param ActionEvent e action event
+	 */
+	public void erorr(ActionEvent e) {
+		Alert alert = new Alert(AlertType.NONE);
+        // set alert type to be an error
+		alert.setAlertType(AlertType.ERROR); 
+		alert.setContentText("Book not found, check the spelling of the book!");
+        // show and wait
+		alert.showAndWait();    
 	}
 
 }

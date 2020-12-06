@@ -21,6 +21,37 @@ public class EReaderModel {
 	}
 	
 	/**
+	 * This method is used to interact with the current displayed book
+	 * in the library and turn its current page to the first one.
+	 * 
+	 * @param fileName represents the book to open
+	 */
+	public void openBook(String fileName) {
+		
+		if (bookLibrary.containsKey(fileName)) {
+			Book newBook = bookLibrary.get(fileName);
+			curBook = newBook;
+			curBook.openBook();
+		} else {
+			Book newBook = new Book(fileName);
+			bookLibrary.put(fileName, newBook);
+			curBook = newBook;
+			curBook.openBook();
+		}
+	}
+	
+	public double getProgress() {
+		return curBook.getProgress();
+	}
+	/*
+	 * check if the book found or not 
+	 * @return return true if the book is spelled wrong and not valid 
+	 */
+	public boolean bookNotFounds() {/////////////////////
+		return curBook.bookNotFound();
+	}
+	
+	/**
 	 * 
 	 * @param book
 	 */
@@ -65,14 +96,6 @@ public class EReaderModel {
 	 */
 	public void getPrevPage() {
 		curBook.prevPage();
-	}
-	
-	/**
-	 * This method is used to interact with the current displayed book
-	 * in the library and turn its current page to the first one.
-	 */
-	public void openBook() {
-		curBook.openBook();
 	}
 }
 
