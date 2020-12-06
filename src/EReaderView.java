@@ -29,6 +29,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -75,24 +77,33 @@ public class EReaderView extends Application implements java.util.Observer {
 		
 		/* This string represents the words on the current page to display */
 		String words = (String) arg;
+		System.out.println(words);
 		
 		/*
 		 * Creates a stack pane to stack the label representing the page on
 		 * top of the gray background
 		 */
 		StackPane stackCenter = new StackPane();
-		
-		Rectangle pageRect = new Rectangle(800, 700, Color.WHITE);
+		Rectangle pageRect = null;
 		
 		/* Below is the code to create a label to display as the current page */
 		TextArea page = new TextArea(words);/////////////label///////////////
+		
+		if(mode == 0) {
+			border.setBackground(new Background(new BackgroundFill(Color.gray(0.3), null, null)));
+			page.setStyle("-fx-text-fill: white; -fx-background-color: rgb(64, 64, 64); "
+					+ "-fx-control-inner-background: rgb(64, 64, 64);");
+		} else {
+			border.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
+			page.setStyle("-fx-text-fill: black; -fx-background-color: white; -fx-control-inner-background: white;");
+		}
 		/* Wraps the text to window's size */
 		page.setWrapText(true);
 		/* Changes the wrapping nature of text to only the center of BorderPane */
 		page.setPadding(new Insets(50)); 
 		page.setEditable(false);  ////////////////new//////////////	
 		
-		stackCenter.getChildren().addAll(pageRect, page);
+		stackCenter.getChildren().addAll(page);
 		
 		StackPane.setAlignment(page, Pos.TOP_CENTER);
 		
@@ -111,6 +122,11 @@ public class EReaderView extends Application implements java.util.Observer {
 		/* Below is the code to display the current page number */
 		Text pageNum = new Text("Page " + Integer.toString(curBook.getCurPage()));
 		pageNum.setFont(Font.font(20));
+		if(mode == 0) {
+			pageNum.setFill(Color.WHITE);
+		} else {
+			pageNum.setFill(Color.BLACK);
+		}
 		/* Sets and aligns the page counter to the bottom center of the BorderPane */
 		border.setBottom(pageNum);
 		BorderPane.setAlignment(pageNum, Pos.TOP_CENTER);
@@ -244,6 +260,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		fontHBox.setAlignment(Pos.BASELINE_CENTER);
 		
 		CustomMenuItem fontCustomMenuItem = new CustomMenuItem(fontHBox);
+		fontCustomMenuItem.setHideOnClick(false);
 		settings.getItems().add(fontCustomMenuItem);
 		
 		/* Below adds the option to type in a new font size */
@@ -255,33 +272,38 @@ public class EReaderView extends Application implements java.util.Observer {
 		fontSizeHBox.setAlignment(Pos.BASELINE_CENTER);
 		
 		CustomMenuItem fontSizeBox = new CustomMenuItem(fontSizeHBox);
+		fontSizeBox.setHideOnClick(false);
 		settings.getItems().add(fontSizeBox);
 		
-		//CheckBox modeField = new CheckBox("Dark Mode");
-		//HBox modeHBox = new HBox(10, modeField);
-		//modeHBox.setAlignment(Pos.BASELINE_CENTER);
+		Text modeText = new Text("Dark Mode");
+		CheckBox modeField = new CheckBox();
+		modeField.setSelected(mode==0);
+		HBox modeHBox = new HBox(10, modeText, modeField);
+		modeHBox.setAlignment(Pos.BASELINE_CENTER);
 		
-		//CustomMenuItem modeBox = new CustomMenuItem(modeHBox);
-		//settings.getItems().add(modeBox);
+		CustomMenuItem modeBox = new CustomMenuItem(modeHBox);
+		modeBox.setHideOnClick(false);
+		settings.getItems().add(modeBox);
 		
 		/* Below is the button that will apply these new changes */
 		Button apply = new Button("Apply");
+		Text applyText = new Text("Will be updated when changing pages");
 		apply.setOnAction(event -> {
 			fontSize = Integer.parseInt(fontSizeField.getText());
 			settingMap.put("fontSize", String.valueOf(fontSize));
 			fontType = fontField.getText();
 			settingMap.put("fontType", fontType);
-			//if(modeField.isSelected()) {
-			//	settingMap.put("displayMode", "0");
-			//	mode = 0;
-			//} else {
-			//	settingMap.put("displayMode", "1");
-			//	mode = 1;
-			//}
+			if(modeField.isSelected()) {
+				settingMap.put("displayMode", "0");
+				mode = 0;
+			} else {
+				settingMap.put("displayMode", "1");
+				mode = 1;
+			}
 			writeSettings();
 		});
-		
-		CustomMenuItem applyButton = new CustomMenuItem(apply);
+		HBox applyHBox = new HBox(apply, applyText);
+		CustomMenuItem applyButton = new CustomMenuItem(applyHBox);
 		settings.getItems().add(applyButton);
 		
 		Menu library = new Menu("Library");
@@ -343,8 +365,9 @@ public class EReaderView extends Application implements java.util.Observer {
 		 */
 		left.setOnAction(event -> {
 			/* Show previous page */
-			
-			controller.getPrev();
+			if(curPage != 0) {
+				controller.getPrev();
+			}
 		});
 		
 		left.setPadding(new Insets(15));
@@ -360,9 +383,9 @@ public class EReaderView extends Application implements java.util.Observer {
 		 */
 		right.setOnAction(event -> {
 			/* Show next page */
-			
-			controller.getNext();
-			
+			if(curPage != 0) {
+				controller.getNext();
+			}
 		});
 		
 		right.setPadding(new Insets(15));
@@ -380,9 +403,16 @@ public class EReaderView extends Application implements java.util.Observer {
 		pageNum.setFont(Font.font(20));
 		border.setBottom(pageNum);
 		BorderPane.setAlignment(pageNum, Pos.BOTTOM_CENTER);
-		
-		
-		Rectangle pageRect = new Rectangle(800, 700, Color.WHITE);
+		Rectangle pageRect = null;
+		if(mode == 0) {
+			border.setBackground(new Background(new BackgroundFill(Color.gray(0.3), null, null)));
+			pageRect = new Rectangle(800, 700, Color.rgb(64, 64, 64));
+			pageNum.setFill(Color.WHITE);
+		} else {
+			border.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
+			pageRect = new Rectangle(800, 700, Color.WHITE);
+			pageNum.setFill(Color.BLACK);
+		}
 		border.setCenter(pageRect);
 		BorderPane.setAlignment(pageRect, Pos.CENTER);
 		
@@ -405,7 +435,9 @@ public class EReaderView extends Application implements java.util.Observer {
 			while(line != null) {
 				String[] setting = line.split(",");
 				settingMap.put(setting[0], setting[1]);
+				line = bufferedReader.readLine();
 			}
+			System.out.println(settingMap);
 			bufferedReader.close();
 		} catch (FileNotFoundException f) {
 			try {
