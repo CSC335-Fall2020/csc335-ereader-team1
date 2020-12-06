@@ -60,6 +60,7 @@ public class EReaderView extends Application implements java.util.Observer {
 	private int fontSize;
 	
 	private HashMap<String, String> settingMap;
+	private HashMap<String, Integer> bookList;
 
 	private double progress = 0;
 	
@@ -74,17 +75,17 @@ public class EReaderView extends Application implements java.util.Observer {
 		 * designated as the current book to look at
 		 */
 		Book curBook = (Book) o;
+		System.out.println(curBook.getCurPage());
+		curPage = curBook.getCurPage();
 		
 		/* This string represents the words on the current page to display */
 		String words = (String) arg;
-		System.out.println(words);
 		
 		/*
 		 * Creates a stack pane to stack the label representing the page on
 		 * top of the gray background
 		 */
 		StackPane stackCenter = new StackPane();
-		Rectangle pageRect = null;
 		
 		/* Below is the code to create a label to display as the current page */
 		TextArea page = new TextArea(words);/////////////label///////////////
@@ -190,6 +191,7 @@ public class EReaderView extends Application implements java.util.Observer {
 				
 				this.fileName = fileName;
 				controller.getBook(fileName).addObserver(EReaderView.this);
+				curPage = controller.getBook(fileName).getCurPage();
 				controller.openBook(fileName);
 				
 				MenuItem newBook = new MenuItem(fileName);
@@ -197,6 +199,9 @@ public class EReaderView extends Application implements java.util.Observer {
 				
 				newBook.setOnAction(libraryEvent -> {
 					controller.openBook(fileName);
+					curPage = controller.getBook(fileName).getCurPage();
+					System.out.println(fileName);
+					System.out.println(controller.getBook(fileName).getCurPage());
 				});
 				
 				this.close();
@@ -287,7 +292,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		
 		/* Below is the button that will apply these new changes */
 		Button apply = new Button("Apply");
-		Text applyText = new Text("Will be updated when changing pages");
+		Text applyText = new Text("Will be updated when page changes");
 		apply.setOnAction(event -> {
 			fontSize = Integer.parseInt(fontSizeField.getText());
 			settingMap.put("fontSize", String.valueOf(fontSize));
@@ -437,7 +442,6 @@ public class EReaderView extends Application implements java.util.Observer {
 				settingMap.put(setting[0], setting[1]);
 				line = bufferedReader.readLine();
 			}
-			System.out.println(settingMap);
 			bufferedReader.close();
 		} catch (FileNotFoundException f) {
 			try {
