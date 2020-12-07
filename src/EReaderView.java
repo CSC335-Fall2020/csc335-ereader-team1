@@ -487,6 +487,34 @@ public class EReaderView extends Application implements java.util.Observer {
 			e.printStackTrace();
 		}
 	}
+	
+	private void loadLibrary() throws Exception {
+		HashMap<String, Integer> bookList = new HashMap<String, Integer>();
+		try {
+			BufferedReader bufferedReader = new BufferedReader(new FileReader("BookLibrary.txt"));
+			String line = bufferedReader.readLine();
+			while(line != null) {
+				String[] book = line.split("s3p4r4t0r");
+				//readBook(book[0]);
+				line = bufferedReader.readLine();
+			}
+			bufferedReader.close();
+		} catch (FileNotFoundException f) {
+			try {
+				File newLibrary = new File("BookLibrary.txt");
+				System.out.println(newLibrary.canRead());
+				newLibrary.createNewFile();
+			} catch (IOException g){
+				g.printStackTrace();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for(String bookName : bookList.keySet()) {
+			//library.getItems().add(new MenuItem(bookName));
+		}
+	}
+	
 	/**
 	 * this method will control the error message if book is not found or spilled wrong
 	 * @param ActionEvent e action event
