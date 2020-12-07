@@ -1,15 +1,5 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.Scanner;
-
-import javafx.scene.control.MenuItem;
 
 public class EReaderModel {
 	
@@ -23,6 +13,10 @@ public class EReaderModel {
 		Book book = new Book(bookName);
 		Library(bookName, book);
 		curBook = book;
+	}
+	
+	public Book getCurBook() {
+		return curBook;
 	}
 	
 	/**

@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Observable;
 import java.util.Scanner;
 
@@ -100,7 +99,8 @@ public class Book extends Observable {
 			firstPage += words.get(i) + " ";
 		}
 		/* Displays that the current first page is 1 */
-		curPage = 1;
+		this.curPage = 1;
+		this.curIndex = 0;
 		progress = incriment;
 		
 		/* Updates the view accordingly */
@@ -131,7 +131,7 @@ public class Book extends Observable {
 		 */
 		if (curIndex + wordIndex < words.size()) {
 			curIndex += wordIndex;
-			curPage += 1;
+			this.curPage += 1;
 		}
 		
 		/*
@@ -181,7 +181,7 @@ public class Book extends Observable {
 		 */
 		if (curIndex - wordIndex >= 0) {
 			curIndex -= wordIndex;
-			curPage -= 1;
+			this.curPage -= 1;
 		}
 		
 		/*

@@ -10,17 +10,14 @@ import java.util.Observable;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.CustomMenuItem;
-import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -28,7 +25,6 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -36,7 +32,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -50,7 +45,7 @@ public class EReaderView extends Application implements java.util.Observer {
 	
 	/* Saves current page number */
 	private int curPage = 0;
-	private String fileName;
+	private String fileName = null;
 	
 	/* Saves border pane for update use */
 	private BorderPane border;
@@ -59,13 +54,14 @@ public class EReaderView extends Application implements java.util.Observer {
 	private String fontType;
 	private int fontSize;
 	
+	// Maps to hold data for settings and library/bookmarks.
 	private HashMap<String, String> settingMap;
 	private HashMap<String, Integer> bookList;
-
-	private double progress = 0;
 	
+	// Saves a persistent copy of library tab so multiple classes and methods can work with it. 
 	private Menu library;
-
+	
+	// Dark mode selection indicator
 	private int mode;
 
 	@Override
@@ -75,7 +71,6 @@ public class EReaderView extends Application implements java.util.Observer {
 		 * designated as the current book to look at
 		 */
 		Book curBook = (Book) o;
-		System.out.println(curBook.getCurPage());
 		curPage = curBook.getCurPage();
 		
 		/* This string represents the words on the current page to display */
@@ -90,6 +85,9 @@ public class EReaderView extends Application implements java.util.Observer {
 		/* Below is the code to create a label to display as the current page */
 		TextArea page = new TextArea(words);/////////////label///////////////
 		
+		/**
+		 * Sets the colors to be appropriate for dark/light mode using CSS style settings. 
+		 */
 		if(mode == 0) {
 			border.setBackground(new Background(new BackgroundFill(Color.gray(0.3), null, null)));
 			page.setStyle("-fx-text-fill: white; -fx-background-color: rgb(64, 64, 64); "
@@ -98,6 +96,7 @@ public class EReaderView extends Application implements java.util.Observer {
 			border.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
 			page.setStyle("-fx-text-fill: black; -fx-background-color: white; -fx-control-inner-background: white;");
 		}
+		
 		/* Wraps the text to window's size */
 		page.setWrapText(true);
 		/* Changes the wrapping nature of text to only the center of BorderPane */
@@ -123,7 +122,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		/* Below is the code to display the current page number */
 		Text pageNum = new Text("Page " + Integer.toString(curBook.getCurPage()));
 		pageNum.setFont(Font.font(20));
-		if(mode == 0) {
+		if(mode == 0) { //Dark mode font style setting.
 			pageNum.setFill(Color.WHITE);
 		} else {
 			pageNum.setFill(Color.BLACK);
@@ -134,7 +133,6 @@ public class EReaderView extends Application implements java.util.Observer {
 		
 		////////////////////////progress bar//////////////////////////
 		ProgressBar progressBar = new ProgressBar();
-		progress = 0.1;
 		progressBar.setProgress(controller.getProgress());
 		
 		TilePane tileButtoms = new TilePane(Orientation.HORIZONTAL);
@@ -148,8 +146,6 @@ public class EReaderView extends Application implements java.util.Observer {
 	}
 	
 	private class Open extends Stage {
-			
-		private String fileName;
 			
 		public Open() {
 			this.setTitle("Import File");
@@ -189,19 +185,22 @@ public class EReaderView extends Application implements java.util.Observer {
 					return;
 				}
 				
-				this.fileName = fileName;
 				controller.getBook(fileName).addObserver(EReaderView.this);
 				curPage = controller.getBook(fileName).getCurPage();
 				controller.openBook(fileName);
 				
 				MenuItem newBook = new MenuItem(fileName);
 				library.getItems().add(newBook);
+				bookList.put(fileName, 0);
+				writeLibrary();
 				
 				newBook.setOnAction(libraryEvent -> {
-					controller.openBook(fileName);
-					curPage = controller.getBook(fileName).getCurPage();
-					System.out.println(fileName);
-					System.out.println(controller.getBook(fileName).getCurPage());
+					controller.openBook(newBook.getText());
+					if(bookList.get(fileName) != 0) {
+						for(int i = 1; i < bookList.get(fileName); i++) {
+							controller.getNext();
+						}
+					}
 				});
 				
 				this.close();
@@ -213,6 +212,31 @@ public class EReaderView extends Application implements java.util.Observer {
 			this.setScene(scene);
 			
 			initModality(Modality.APPLICATION_MODAL);
+		}
+		
+		/**
+		 * Modified version of Open() constructor, operating on the idea that the book already
+		 * exists as a MenuItem and simply needs to be displayed from the library. 
+		 * @author Anthony
+		 * @param bookName, name of the book to display from the library. 
+		 */
+		public Open(String bookName) {
+			controller.openFile(bookName);
+			if (controller.bookNotFoundss() == true) { //////// to check if the book is right
+				erorr(null);
+				this.close();
+				return;
+			}
+			fileName = bookName;
+			controller.getBook(bookName).addObserver(EReaderView.this);
+			curPage = controller.getBook(bookName).getCurPage();
+			controller.openBook(bookName);
+			if(bookList.get(bookName) != 0) {
+				for(int i = 1; i < bookList.get(bookName); i++) {
+					controller.getNext();
+				}
+			}
+			this.close();
 		}
 			
 	}
@@ -244,10 +268,13 @@ public class EReaderView extends Application implements java.util.Observer {
 		});
 		
 		///////////////////////////////////////////
-		/* Below is the button that will save */
+		/* Below is the button that will bookmark the current page. */
 		Button savetButton = new Button("Save");
 		savetButton.setOnAction(event -> {
-			
+			if(fileName != null) { //Check so that there are no complications if a book hasn't been loaded.
+				bookList.put(fileName, curPage);
+				writeLibrary();
+			}
 		});
 		
 		CustomMenuItem saveButtonCustomMenuItem = new CustomMenuItem(savetButton);
@@ -313,6 +340,8 @@ public class EReaderView extends Application implements java.util.Observer {
 		
 		Menu library = new Menu("Library");
 		this.library = library;
+		
+		loadLibrary();
 		
 		/* Lastly this adds the menus to the menu bar */
 		menuBar.getMenus().add(file);
@@ -409,6 +438,11 @@ public class EReaderView extends Application implements java.util.Observer {
 		border.setBottom(pageNum);
 		BorderPane.setAlignment(pageNum, Pos.BOTTOM_CENTER);
 		Rectangle pageRect = null;
+		
+		/**
+		 * This section of the code changes the initial design based on whether or not Dark Mode is
+		 * selected. 
+		 */
 		if(mode == 0) {
 			border.setBackground(new Background(new BackgroundFill(Color.gray(0.3), null, null)));
 			pageRect = new Rectangle(800, 700, Color.rgb(64, 64, 64));
@@ -418,6 +452,7 @@ public class EReaderView extends Application implements java.util.Observer {
 			pageRect = new Rectangle(800, 700, Color.WHITE);
 			pageNum.setFill(Color.BLACK);
 		}
+		
 		border.setCenter(pageRect);
 		BorderPane.setAlignment(pageRect, Pos.CENTER);
 		
@@ -432,6 +467,12 @@ public class EReaderView extends Application implements java.util.Observer {
 		stage.show();
 	}
 	
+	/**
+	 * Loads the settings on startup from a file, Settings.txt, recording font style, font size,
+	 * and a Dark Mode toggle. If the Settings.txt file does not exist, it creates a new one.
+	 * @author Anthony
+	 * @throws Exception
+	 */
 	private void loadSettings() throws Exception {
 		this.settingMap = new HashMap<String, String>();
 		try {
@@ -453,6 +494,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		// Loads defaults if the settings did not exist in Settings.txt.
 		if(settingMap.containsKey("fontType")) {
 			this.fontType = settingMap.get("fontType");
 		} else {
@@ -474,6 +516,12 @@ public class EReaderView extends Application implements java.util.Observer {
 		writeSettings();
 	}
 	
+	/**
+	 * Writes the user's view settings to a file. This method is called when first launched, in
+	 * case the file did not exist/had insufficient information for next time, or whenever
+	 * the settings are updated by the user. 
+	 * @author Anthony
+	 */
 	private void writeSettings() {
 		try {
 			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("Settings.txt"));
@@ -488,21 +536,28 @@ public class EReaderView extends Application implements java.util.Observer {
 		}
 	}
 	
+	/**
+	 * Loads the library from a file, recording filenames/paths and bookmarked page, if exists.
+	 * If the library file, Library.txt, does not exist, it creates a new Library.txt file. 
+	 * This method is called at launch, a.k.a. start().
+	 * @author Anthony
+	 * @throws Exception
+	 */
 	private void loadLibrary() throws Exception {
-		HashMap<String, Integer> bookList = new HashMap<String, Integer>();
+		this.bookList = new HashMap<String, Integer>();
 		try {
-			BufferedReader bufferedReader = new BufferedReader(new FileReader("BookLibrary.txt"));
+			BufferedReader bufferedReader = new BufferedReader(new FileReader("Library.txt"));
 			String line = bufferedReader.readLine();
 			while(line != null) {
 				String[] book = line.split("s3p4r4t0r");
-				//readBook(book[0]);
+				//Note: "s3p4r4t0r" is used as it is unlikely to exist within the path string.
+				bookList.put(book[0], Integer.valueOf(book[1]));
 				line = bufferedReader.readLine();
 			}
 			bufferedReader.close();
 		} catch (FileNotFoundException f) {
 			try {
-				File newLibrary = new File("BookLibrary.txt");
-				System.out.println(newLibrary.canRead());
+				File newLibrary = new File("Library.txt");
 				newLibrary.createNewFile();
 			} catch (IOException g){
 				g.printStackTrace();
@@ -511,7 +566,33 @@ public class EReaderView extends Application implements java.util.Observer {
 			e.printStackTrace();
 		}
 		for(String bookName : bookList.keySet()) {
-			//library.getItems().add(new MenuItem(bookName));
+			MenuItem newBook = new MenuItem(bookName);
+			library.getItems().add(newBook);
+			newBook.setOnAction(libraryEvent -> {
+				Open openBook = new Open(newBook.getText());
+			});
+			
+		}
+	}
+	
+	/**
+	 * Method to write contents of bookList (basically a HashMap of filenames/paths and current pages)
+	 * to a text file, Library.txt. This method is called every time a new file is imported or a bookmark
+	 * is saved. 
+	 * @author Anthony
+	 */
+	private void writeLibrary() {
+		try {
+			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("Library.txt"));
+			String newLib = "";
+			for(String x : bookList.keySet()) {
+				newLib += x + "s3p4r4t0r" + bookList.get(x) + "\n";
+				//Note: "s3p4r4t0r" is used as it is unlikely to exist within the path string.
+			}
+			bufferedWriter.write(newLib);
+			bufferedWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
