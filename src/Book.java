@@ -52,7 +52,6 @@ public class Book extends Observable {
 		} catch (FileNotFoundException e) {
 			this.bookNotFound = true;/////////////////////
 			System.out.println("Error");
-			e.printStackTrace();
 		}
 	}
 	
