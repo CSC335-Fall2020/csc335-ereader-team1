@@ -86,9 +86,12 @@ public class EReaderController {
 	}
 	
 	/**
+	 * Checks if a book is contained in the library model.
 	 * 
+	 * @param String fileName represents the file name of the book
+	 * @return returns true if book is contained in library and false if not
 	 */
-	public void setBookmark() {
-		model.setBookmark();
+	public boolean containsBook(String fileName) {
+		return model.contains(fileName);
 	}
 }

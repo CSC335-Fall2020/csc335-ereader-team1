@@ -1,10 +1,5 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.Scanner;
 
 public class EReaderModel {
 	
@@ -18,6 +13,10 @@ public class EReaderModel {
 		Book book = new Book(bookName);
 		Library(bookName, book);
 		curBook = book;
+	}
+	
+	public Book getCurBook() {
+		return curBook;
 	}
 	
 	/**
@@ -98,8 +97,17 @@ public class EReaderModel {
 		curBook.prevPage();
 	}
 	
-	public void setBookmark() {
-		curBook.setBookmark();
+	/**
+	 * Checks if a book is contained in the library model.
+	 * 
+	 * @param String fileName represents the file name of the book
+	 * @return returns true if book is contained in library and false if not
+	 */
+	public boolean contains(String fileName) {
+		if (bookLibrary.containsKey(fileName)) {
+			return true;
+		}
+		return false;
 	}
 }
 
