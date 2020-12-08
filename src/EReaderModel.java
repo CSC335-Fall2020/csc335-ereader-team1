@@ -1,10 +1,5 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.Scanner;
 
 public class EReaderModel {
 	
@@ -20,7 +15,34 @@ public class EReaderModel {
 		curBook = book;
 	}
 	
+	public Book getCurBook() {
+		return curBook;
+	}
+	
 	/**
+	 * This method is used to interact with the current displayed book
+	 * in the library and turn its current page to the first one.
+	 * 
+	 * @param fileName represents the book to open
+	 */
+	public void openBook(String fileName) {
+		
+		if (bookLibrary.containsKey(fileName)) {
+			Book newBook = bookLibrary.get(fileName);
+			curBook = newBook;
+			curBook.openBook();
+		} else {
+			Book newBook = new Book(fileName);
+			bookLibrary.put(fileName, newBook);
+			curBook = newBook;
+			curBook.openBook();
+		}
+	}
+	
+	public double getProgress() {
+		return curBook.getProgress();
+	}
+	/*
 	 * check if the book found or not 
 	 * @return return true if the book is spelled wrong and not valid 
 	 */
@@ -76,10 +98,15 @@ public class EReaderModel {
 	}
 	
 	/**
-	 * This method is used to interact with the current displayed book
-	 * in the library and turn its current page to the first one.
+	 * Checks if a book is contained in the library model.
+	 * 
+	 * @param String fileName represents the file name of the book
+	 * @return returns true if book is contained in library and false if not
 	 */
-	public void openBook() {
-		curBook.openBook();
+	public boolean contains(String fileName) {
+		if (bookLibrary.containsKey(fileName)) {
+			return true;
+		}
+		return false;
 	}
 }

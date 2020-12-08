@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Observable;
 import java.util.Scanner;
 
@@ -13,15 +12,18 @@ public class Book extends Observable {
 	private int curPage = 0;
 	
 	/* Field that holds the book marked page in the book */
-	private int bookmark;
+	private int bookmark = 0;
 	
 	/* Current Index of first word of current page */
 	private int curIndex = 0;
 	
 	/* Field that represents how many words are on a page */
+	
 	private int wordsOnPage = 150;
 	
 	private boolean bookNotFound;////////////////
+	
+	private float progress = 0;
 
 	/**
 	 * 
@@ -74,6 +76,7 @@ public class Book extends Observable {
 		
 		/* This string holds the words for the first page of the book */
 		String firstPage = "";
+		float incriment = ((float) wordsOnPage) / words.size();
 		
 		/*
 		 * Checks the size of the book in order to change the amount of
@@ -90,13 +93,15 @@ public class Book extends Observable {
 		 * This for loop iterates over the first page of words in the book
 		 * until it reaches the index of the first word on the next page
 		 */
-		for (int i = curIndex; i < wordIndex; i++) {
+		for (int i = bookmark; i < wordIndex + bookmark; i++) {
 			
 			/* Adds to current word to the first page string */
 			firstPage += words.get(i) + " ";
 		}
 		/* Displays that the current first page is 1 */
-		curPage += 1;
+		this.curPage = 1;
+		this.curIndex = 0;
+		progress = incriment;
 		
 		/* Updates the view accordingly */
 		setChanged();
@@ -112,6 +117,7 @@ public class Book extends Observable {
 		
 		/* This string represents the previous page of words */
 		String nextPage = "";
+		float incriment = ((float) wordsOnPage) / words.size();
 		
 		/* This index represents the next pages first words index */
 		int wordIndex = wordsOnPage + 1;
@@ -125,7 +131,7 @@ public class Book extends Observable {
 		 */
 		if (curIndex + wordIndex < words.size()) {
 			curIndex += wordIndex;
-			curPage += 1;
+			this.curPage += 1;
 		}
 		
 		/*
@@ -142,6 +148,11 @@ public class Book extends Observable {
 			/* Adds the next word to the next page string */
 			nextPage += words.get(i) + " ";
 		}
+		
+		if (progress < 1) {
+			progress += incriment;
+		}
+			
 		/* Updates the view accordingly */
 		setChanged();
 		notifyObservers(nextPage);
@@ -156,6 +167,7 @@ public class Book extends Observable {
 		
 		/* This string represents the previous page of words */
 		String prevPage = "";
+		float incriment = ((float) wordsOnPage) / words.size();
 		
 		/* This index represents the previous pages first words index */
 		int wordIndex = wordsOnPage + 1;
@@ -169,7 +181,7 @@ public class Book extends Observable {
 		 */
 		if (curIndex - wordIndex >= 0) {
 			curIndex -= wordIndex;
-			curPage -= 1;
+			this.curPage -= 1;
 		}
 		
 		/*
@@ -182,6 +194,11 @@ public class Book extends Observable {
 			/* Adds the next word to the previous page string */		
 			prevPage += words.get(i) + " ";
 		}
+		
+		if (progress > incriment) {
+			progress -= incriment;
+		}
+		
 		/* Updates the view accordingly */
 		setChanged();
 		notifyObservers(prevPage);
@@ -195,5 +212,12 @@ public class Book extends Observable {
 	 */
 	public int getCurPage() {
 		return curPage;
+	}
+	
+	/**
+	 * 
+	 */
+	public float getProgress() {
+		return this.progress;
 	}
 }

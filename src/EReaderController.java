@@ -66,10 +66,17 @@ public class EReaderController {
 	 * This method is used by the controller to interact with the library/model and
 	 * the library's current displayed book to turn the current displayed book's
 	 * to the first page.
+	 * 
+	 * @param fileName is a string representing the book to open
 	 */
-	public void openBook() {
-		model.openBook();
+	public void openBook(String fileName) {
+		model.openBook(fileName);
 	}
+	
+	public double getProgress() {
+		return model.getProgress();
+	}
+	
 	/**
 	 * check if the book found or not 
 	 * @return return true if the book is spelled wrong and not valid 
@@ -78,4 +85,13 @@ public class EReaderController {
 		return model.bookNotFounds();
 	}
 	
+	/**
+	 * Checks if a book is contained in the library model.
+	 * 
+	 * @param String fileName represents the file name of the book
+	 * @return returns true if book is contained in library and false if not
+	 */
+	public boolean containsBook(String fileName) {
+		return model.contains(fileName);
+	}
 }
