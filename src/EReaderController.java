@@ -85,4 +85,10 @@ public class EReaderController {
 		return model.bookNotFounds();
 	}
 	
+	/**
+	 * 
+	 */
+	public void setBookmark() {
+		model.setBookmark();
+	}
 }

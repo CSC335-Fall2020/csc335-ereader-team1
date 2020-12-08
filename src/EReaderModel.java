@@ -97,5 +97,9 @@ public class EReaderModel {
 	public void getPrevPage() {
 		curBook.prevPage();
 	}
+	
+	public void setBookmark() {
+		curBook.setBookmark();
+	}
 }
 

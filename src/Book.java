@@ -13,7 +13,8 @@ public class Book extends Observable {
 	private int curPage = 0;
 	
 	/* Field that holds the book marked page in the book */
-	private int bookmark = 0;
+	private int bookmarkIndex = 0;
+	private int bookmarkPage = 1;
 	
 	/* Current Index of first word of current page */
 	private int curIndex = 0;
@@ -78,6 +79,7 @@ public class Book extends Observable {
 		/* This string holds the words for the first page of the book */
 		String firstPage = "";
 		float incriment = ((float) wordsOnPage) / words.size();
+		curIndex = bookmarkIndex;
 		
 		/*
 		 * Checks the size of the book in order to change the amount of
@@ -94,14 +96,17 @@ public class Book extends Observable {
 		 * This for loop iterates over the first page of words in the book
 		 * until it reaches the index of the first word on the next page
 		 */
-		for (int i = bookmark; i < wordIndex + bookmark; i++) {
+		for (int i = bookmarkIndex; i < wordIndex + bookmarkIndex; i++) {
 			
 			/* Adds to current word to the first page string */
 			firstPage += words.get(i) + " ";
 		}
 		/* Displays that the current first page is 1 */
-		curPage = 1;
-		progress = incriment;
+		curPage = bookmarkPage;
+		
+		if (curPage == 1) {
+			progress = incriment;
+		}
 		
 		/* Updates the view accordingly */
 		setChanged();
@@ -219,5 +224,20 @@ public class Book extends Observable {
 	 */
 	public float getProgress() {
 		return this.progress;
+	}
+	
+	/**
+	 * 
+	 */
+	public void setBookmark() {
+		bookmarkIndex = curIndex;
+		bookmarkPage = curPage;
+	}
+	
+	/**
+	 * 
+	 */
+	public void setWordsOnPage(int index) {
+		wordsOnPage = index;
 	}
 }
