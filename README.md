@@ -8,6 +8,7 @@ Sultan Alnhari
 Jack Guerin
 
 Please note that if you are using eclipse you should have Text file encoding set to UTF-8 in order for some text files to work. Window > Preferences > General > Workspace. 
+Program works with both file names and complete file paths. 
 "Wow" factors used are Light/Dark mode style toggles, and a landing page logo image (also of the Light/Dark variety). 
 Files are Book.java, EReaderController.java, EReaderMain.java, EReaderModel.java, and EReaderView.java. 
 JUnit test file is EReaderControllerTest.java
