@@ -101,7 +101,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		page.setWrapText(true);
 		/* Changes the wrapping nature of text to only the center of BorderPane */
 		page.setPadding(new Insets(50)); 
-		page.setEditable(false);  ////////////////new//////////////	
+		page.setEditable(false);  
 		
 		stackCenter.getChildren().addAll(page);
 		
@@ -131,7 +131,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		border.setBottom(pageNum);
 		BorderPane.setAlignment(pageNum, Pos.TOP_CENTER);
 		
-		////////////////////////progress bar//////////////////////////
+		// @author Sultan Alghamdi
 		ProgressBar progressBar = new ProgressBar();
 		progressBar.setProgress(controller.getProgress());
 		
@@ -141,7 +141,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		tileButtoms.setVgap(8.0);
 		tileButtoms.getChildren().addAll(progressBar, pageNum);
 		border.setBottom(tileButtoms);
-		//////////////////////////////////////////////////
+		
 		
 	}
 	
@@ -249,6 +249,10 @@ public class EReaderView extends Application implements java.util.Observer {
 	}
 
 	@Override
+	/**
+	 * @author Sultan Alghamdi
+	 * 
+	 */
 	public void start(Stage stage) throws Exception {
 		/* 
 		 * Below is a commented line to add the view as an observer of the model
@@ -274,7 +278,7 @@ public class EReaderView extends Application implements java.util.Observer {
 			openFile.showAndWait();
 		});
 		
-		///////////////////////////////////////////
+		// @author Sultan Alghamdi
 		/* Below is the button that will bookmark the current page. */
 		Button savetButton = new Button("Save");
 		savetButton.setOnAction(event -> {
@@ -286,7 +290,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		
 		CustomMenuItem saveButtonCustomMenuItem = new CustomMenuItem(savetButton);
 		file.getItems().add(saveButtonCustomMenuItem);
-		///////////////////////////////////////////
+		
 		
 		/* This menu option will allow a user to change the font and font size */
 		Menu settings = new Menu("Settings");
@@ -355,9 +359,8 @@ public class EReaderView extends Application implements java.util.Observer {
 		menuBar.getMenus().add(settings);
 		menuBar.getMenus().add(library);
 		
-		/////////////////////////////////////////////////////////////////////////////////
+		// @author Sultan Alghamdi
 		// adding the find field under this are
-		/////////////////////////////////////////////////////////////////////////////////
 		/* This menu option will allow a user to find the word */
 		Menu find = new Menu("Find");
 		
@@ -389,9 +392,6 @@ public class EReaderView extends Application implements java.util.Observer {
 		
 		CustomMenuItem highlightButtonCustomMenuItem = new CustomMenuItem(highlightButton);
 		settings.getItems().add(highlightButtonCustomMenuItem);
-		
-		/////////////////////////////////////////////////////////////////////////////////
-		/////////////////////////////////////////////////////////////////////////////////
 
 		
 		/* This sets up the border pane below the menu bar */
@@ -604,6 +604,7 @@ public class EReaderView extends Application implements java.util.Observer {
 	}
 	
 	/**
+	 * @author Sultan Alghamdi
 	 * this method will control the error message if book is not found or spilled wrong
 	 * @param ActionEvent e action event
 	 */

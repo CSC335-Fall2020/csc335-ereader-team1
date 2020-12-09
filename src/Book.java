@@ -5,7 +5,7 @@ import java.util.Observable;
 import java.util.Scanner;
 
 public class Book extends Observable {
-
+	
 	private ArrayList<String> words = new ArrayList<>();
 	
 	/* Represents current page in the book */
@@ -26,7 +26,7 @@ public class Book extends Observable {
 	private float progress = 0;
 
 	/**
-	 * 
+	 * @author Sultan Alghamdi
 	 * @param name
 	 */
 	public Book(String name) {
@@ -34,7 +34,7 @@ public class Book extends Observable {
 	}
 
 	/**
-	 * 
+	 * @author Sultan Alghamdi
 	 * @param name
 	 */
 	public void readBook(String name) {
@@ -57,6 +57,7 @@ public class Book extends Observable {
 	}
 	
 	/**
+	 * @author Sultan Alghamdi
 	 * check if the book found or not 
 	 * @return return true if the book is spelled wrong and not valid 
 	 */
