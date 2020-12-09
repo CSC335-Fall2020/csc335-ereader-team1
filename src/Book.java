@@ -55,7 +55,7 @@ public class Book extends Observable {
 			myReader.close();
 		} catch (FileNotFoundException e) {
 			this.bookNotFound = true;/////////////////////
-			System.out.println("Error");
+			System.out.println("Error: FileNotFoundException");
 		}
 	}
 	
@@ -73,8 +73,8 @@ public class Book extends Observable {
 	}
 	
 	/**
-	 * This method opens the current book to the first page in the
-	 * book.
+	 * This method opens the current book to the either the first page in the
+	 * book or whatever the current book marked page is.
 	 * 
 	 * @author jackguerin
 	 */

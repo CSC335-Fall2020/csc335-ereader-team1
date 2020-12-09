@@ -65,9 +65,16 @@ public class EReaderView extends Application implements java.util.Observer {
 	private int mode;
 	
 	/**
+	 * This method updates the current view with a page of words from an imported
+	 * book. This method will update the page of words, the page number, the 
+	 * progress bar, the font size, the font type, and even which mode the view
+	 * is set to (dark or light).
 	 * 
 	 * @author jackguerin
-	 * 
+	 * @author Sultan Alnhari
+	 * @author Anthony
+	 * @param o is the Observable instance that is being updated
+	 * @param arg is an object that will always be an ArrayList of words that represent a page
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
@@ -151,9 +158,11 @@ public class EReaderView extends Application implements java.util.Observer {
 	}
 	
 	/**
+	 * This private class which extends stage acts as a window that allows
+	 * for a user to open/import a file as book to the library and open
+	 * it to the first page on the view.
 	 * 
 	 * @author jackguerin
-	 *
 	 */
 	private class Open extends Stage {
 			
@@ -262,6 +271,11 @@ public class EReaderView extends Application implements java.util.Observer {
 
 	@Override
 	/**
+	 * This method starts the view from main and opens up the window with
+	 * a menu bar with menus to allow a user to update the view by adding a book,
+	 * changing the color, changing the settings, or updating the page. The view
+	 * also displays progress and page numbers at the bottom of the view.
+	 * 
 	 * @author jackguerin 
 	 * add some touches to the start Sultan Alnhari 
 	 */

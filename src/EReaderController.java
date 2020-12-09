@@ -59,31 +59,33 @@ public class EReaderController {
 	}
 	
 	/**
-	 * @author jackguerin
 	 * This method is used by the controller to interact with the library/model and
 	 * the library's current displayed book to turn the current displayed book's
 	 * to the next page.
+	 * 
+	 * @author jackguerin
 	 */
 	public void getNext() {
 		model.getNextPage();
 	}
 	
 	/**
-	 * @author jackguerin
 	 * This method is used by the controller to interact with the library/model and
 	 * the library's current displayed book to turn the current displayed book's
 	 * to the previous page.
+	 * 
+	 * @author jackguerin
 	 */
 	public void getPrev() {
 		model.getPrevPage();
 	}
 	
 	/**
-	 * @author jackguerin
 	 * This method is used by the controller to interact with the library/model and
 	 * the library's current displayed book to turn the current displayed book's
 	 * to the first page.
 	 * 
+	 * @author jackguerin
 	 * @param fileName is a string representing the book to open
 	 */
 	public void openBook(String fileName) {
@@ -104,9 +106,9 @@ public class EReaderController {
 	}
 	
 	/**
-	 * @author jackguerin
 	 * Checks if a book is contained in the library model.
 	 * 
+	 * @author jackguerin
 	 * @param String fileName represents the file name of the book
 	 * @return returns true if book is contained in library and false if not
 	 */

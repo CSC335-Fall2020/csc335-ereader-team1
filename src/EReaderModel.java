@@ -20,10 +20,6 @@ public class EReaderModel {
 		curBook = book;
 	}
 	
-	public Book getCurBook() {
-		return curBook;
-	}
-	
 	/**
 	 * This method is used to interact with the current displayed book
 	 * in the library and turn its current page to the first one.
