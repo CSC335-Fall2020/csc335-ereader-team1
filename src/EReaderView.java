@@ -647,6 +647,7 @@ public class EReaderView extends Application implements java.util.Observer {
 			MenuItem newBook = new MenuItem(bookName);
 			library.getItems().add(newBook);
 			newBook.setOnAction(libraryEvent -> {
+				@SuppressWarnings("unused")
 				Open openBook = new Open(newBook.getText());
 			});
 			
