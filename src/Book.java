@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 /**
  * Class representing the Books themselves within the EReader program. 
- * @author jackguerin
+ * @author Jack Guerin
  * @author Ali Hamza
  * @author Sultan Alnhari
  */
@@ -86,7 +86,7 @@ public class Book extends Observable {
 	 * This method opens the current book to the either the first page in the
 	 * book or whatever the current book marked page is.
 	 * 
-	 * @author jackguerin
+	 * @author Jack Guerin
 	 */
 	public void openBook() {
 		
@@ -129,7 +129,7 @@ public class Book extends Observable {
 	 * in the current displayed book and updates the view
 	 * with those string of words.
 	 * 
-	 * @author jackguerin
+	 * @author Jack Guerin
 	 */
 	public void nextPage() {
 		
@@ -181,7 +181,7 @@ public class Book extends Observable {
 	 * in the current displayed book and updates the view
 	 * with those string of words.
 	 * 
-	 * @author jackguerin
+	 * @author Jack Guerin
 	 */
 	public void prevPage() {
 		
@@ -228,7 +228,7 @@ public class Book extends Observable {
 	 * This method returns the current page number of this
 	 * book.
 	 * 
-	 * @author jackguerin
+	 * @author Jack Guerin
 	 * @return integer representing the current page number. 
 	 */
 	public int getCurPage() {
@@ -239,7 +239,7 @@ public class Book extends Observable {
 	 * This method returns the progress for the current book
 	 * instance.
 	 * 
-	 * @author jackguerin
+	 * @author Jack Guerin
 	 * @return float representing the current progress. 
 	 */
 	public float getProgress() {

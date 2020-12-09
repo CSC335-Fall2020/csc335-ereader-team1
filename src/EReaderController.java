@@ -69,7 +69,7 @@ public class EReaderController {
 	 * the library's current displayed book to turn the current displayed book's
 	 * to the next page.
 	 * 
-	 * @author jackguerin
+	 * @author Jack Guerin
 	 */
 	public void getNext() {
 		model.getNextPage();
@@ -80,7 +80,7 @@ public class EReaderController {
 	 * the library's current displayed book to turn the current displayed book's
 	 * to the previous page.
 	 * 
-	 * @author jackguerin
+	 * @author Jack Guerin
 	 */
 	public void getPrev() {
 		model.getPrevPage();
@@ -91,7 +91,7 @@ public class EReaderController {
 	 * the library's current displayed book to turn the current displayed book's
 	 * to the first page.
 	 * 
-	 * @author jackguerin
+	 * @author Jack Guerin
 	 * @param fileName is a string representing the book to open.
 	 */
 	public void openBook(String fileName) {
@@ -101,7 +101,7 @@ public class EReaderController {
 	/**
 	 * Returns the overall progress of the current book's page versus its overall contents.
 	 * 
-	 * @author jackguerin
+	 * @author Jack Guerin
 	 * @return double between 0.0-1.0 to represent overall progress. 
 	 */
 	public double getProgress() {
@@ -120,7 +120,7 @@ public class EReaderController {
 	/**
 	 * Checks if a book is contained in the library model.
 	 * 
-	 * @author jackguerin
+	 * @author Jack Guerin
 	 * @param String fileName represents the file name of the book.
 	 * @return returns true if book is contained in library and false if not.
 	 */

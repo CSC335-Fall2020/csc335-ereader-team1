@@ -41,7 +41,7 @@ import javafx.stage.Stage;
 
 /**
  * GUI view for E-Reader. 
- * @author jackguerin
+ * @author Jack Guerin
  * @author Anthony
  * @author Sultan Alnhari
  */
@@ -79,7 +79,7 @@ public class EReaderView extends Application implements java.util.Observer {
 	 * Updates the GUI every time the previous page or the next page is accessed, or a new book is
 	 * opened. 
 	 * 
-	 * @author jackguerin
+	 * @author Jack Guerin
 	 * @author Sultan Alnhari
 	 * @author Anthony
 	 * @param o is the Observable instance that is being updated.
@@ -173,14 +173,15 @@ public class EReaderView extends Application implements java.util.Observer {
 	 * 
 	 * Opens a new Book within the controller and displays it on the GUI. 
 	 * 
-	 * @author jackguerin
+	 * @author Jack Guerin
 	 * @author Anthony
 	 */
 	private class Open extends Stage {
 		
 		/**
 		 * Opens a book either by importing it or accessing it through the existing library. 
-		 * @author jackguerin
+		 * 
+		 * @author Jack Guerin
 		 */
 		public Open() {
 			this.setTitle("Import File");
@@ -294,7 +295,7 @@ public class EReaderView extends Application implements java.util.Observer {
 	 * 
 	 * Starts the landing page of the E-Reader GUI program. 
 	 * 
-	 * @author jackguerin 
+	 * @author Jack Guerin 
 	 * @param stage, the operating JavaFX stage. 
 	 * @throws Exception
 	 */
