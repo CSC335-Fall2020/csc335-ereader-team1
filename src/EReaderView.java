@@ -39,6 +39,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * GUI view for E-Reader. 
+ * @author jackguerin
+ * @author Anthony
+ * @author Sultan Alnhari
+ */
 public class EReaderView extends Application implements java.util.Observer {
 	
 	private EReaderController controller = new EReaderController(new EReaderModel());
@@ -70,11 +76,14 @@ public class EReaderView extends Application implements java.util.Observer {
 	 * progress bar, the font size, the font type, and even which mode the view
 	 * is set to (dark or light).
 	 * 
+	 * Updates the GUI every time the previous page or the next page is accessed, or a new book is
+	 * opened. 
+	 * 
 	 * @author jackguerin
 	 * @author Sultan Alnhari
 	 * @author Anthony
-	 * @param o is the Observable instance that is being updated
-	 * @param arg is an object that will always be an ArrayList of words that represent a page
+	 * @param o is the Observable instance that is being updated.
+	 * @param arg is an object that will always be an ArrayList of words that represent a page.
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
@@ -97,7 +106,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		/* Below is the code to create a label to display as the current page */
 		TextArea page = new TextArea(words);/////////////label///////////////
 		
-		/**
+		/*
 		 * Sets the colors to be appropriate for dark/light mode using CSS style settings. 
 		 */
 		if(mode == 0) {
@@ -162,10 +171,17 @@ public class EReaderView extends Application implements java.util.Observer {
 	 * for a user to open/import a file as book to the library and open
 	 * it to the first page on the view.
 	 * 
+	 * Opens a new Book within the controller and displays it on the GUI. 
+	 * 
 	 * @author jackguerin
+	 * @author Anthony
 	 */
 	private class Open extends Stage {
-			
+		
+		/**
+		 * Opens a book either by importing it or accessing it through the existing library. 
+		 * @author jackguerin
+		 */
 		public Open() {
 			this.setTitle("Import File");
 			
@@ -276,12 +292,16 @@ public class EReaderView extends Application implements java.util.Observer {
 	 * changing the color, changing the settings, or updating the page. The view
 	 * also displays progress and page numbers at the bottom of the view.
 	 * 
+	 * Starts the landing page of the E-Reader GUI program. 
+	 * 
 	 * @author jackguerin 
-	 * add some touches to the start Sultan Alnhari 
+	 * @param stage, the operating JavaFX stage. 
+	 * @throws Exception
 	 */
 	public void start(Stage stage) throws Exception {
 		/* 
 		 * Below is a commented line to add the view as an observer of the model
+		 * add some touches to the start - Sultan Alnhari 
 		 */
 		
 		loadSettings();
@@ -304,10 +324,11 @@ public class EReaderView extends Application implements java.util.Observer {
 			openFile.showAndWait();
 		});
 		
-		// @author Sultan Alnhari
+		// @author Sultan Alnhari, button structure and lambda wrapper
 		/* Below is the button that will bookmark the current page. */
 		Button savetButton = new Button("Save");
 		savetButton.setOnAction(event -> {
+			// @author Anthony, operative code to set a bookmark
 			if(fileName != null) { //Check so that there are no complications if a book hasn't been loaded.
 				bookList.put(fileName, curPage);
 				writeLibrary();
@@ -477,7 +498,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		BorderPane.setAlignment(pageNum, Pos.BOTTOM_CENTER);
 		Rectangle pageRect = null;
 		
-		/**
+		/*
 		 * This section of the code changes the initial design based on whether or not Dark Mode is
 		 * selected. 
 		 */
@@ -607,6 +628,7 @@ public class EReaderView extends Application implements java.util.Observer {
 			MenuItem newBook = new MenuItem(bookName);
 			library.getItems().add(newBook);
 			newBook.setOnAction(libraryEvent -> {
+				@SuppressWarnings("unused")
 				Open openBook = new Open(newBook.getText());
 			});
 			
@@ -635,9 +657,9 @@ public class EReaderView extends Application implements java.util.Observer {
 	}
 	
 	/**
+	 * This method will control the error message if book is not found or spelled wrong. 
 	 * @author Sultan Alnhari
-	 * this method will control the error message if book is not found or spilled wrong
-	 * @param ActionEvent e action event
+	 * @param e, action event
 	 */
 	public void erorr(ActionEvent e) {
 		Alert alert = new Alert(AlertType.NONE);
