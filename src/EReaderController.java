@@ -7,7 +7,8 @@ public class EReaderController {
 	EReaderModel model = null;
 	
 	/**
-	 * 
+	 * this is thre constructor 
+	 * @author Ali Hamza @author Sultan Alnhari
 	 * @param model
 	 */
 	public EReaderController(EReaderModel model) {
@@ -15,20 +16,28 @@ public class EReaderController {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * get library
+	 * @author Ali Hamza @author Sultan Alnhari
+	 * @return the library
 	 */
 	public HashMap<String, Book> getLibrary() {
 		return model.getLibrary();
 	}
 	
+	/**
+	 * to get the book by its name
+	 * @author Ali Hamza @author Sultan Alnhari
+	 * @param the book with its name 
+	 * @return
+	 */
 	public Book getBook(String name) {
 		return model.getBook(name);
 	}
 	
 	/**
-	 * 
-	 * @param name
+	 * get the lines 
+	 * @author Ali Hamza @author Sultan Alnhari
+	 * @param the lines 
 	 */
 	public ArrayList<String> getLines(String name) {
 		return model.getLines(name);
@@ -37,7 +46,7 @@ public class EReaderController {
 	/**
 	 * This method is used by the controller to interact with the model and 
 	 * open a file in the library/model and set the file as book in the library.
-	 * 
+	 * @author Ali Hamza @author Sultan Alnhari
 	 * @param bookName
 	 */
 	public void openFile(String bookName) {
@@ -81,10 +90,11 @@ public class EReaderController {
 	}
 	
 	/**
+	 * @author Sultan Alnhari 
 	 * check if the book found or not 
 	 * @return return true if the book is spelled wrong and not valid 
 	 */
-	public boolean bookNotFoundss() {//////////////////
+	public boolean bookNotFoundss() {
 		return model.bookNotFounds();
 	}
 	
