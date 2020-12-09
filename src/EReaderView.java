@@ -1,10 +1,12 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Observable;
 
@@ -13,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -24,6 +27,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -497,22 +502,36 @@ public class EReaderView extends Application implements java.util.Observer {
 		border.setBottom(pageNum);
 		BorderPane.setAlignment(pageNum, Pos.BOTTOM_CENTER);
 		Rectangle pageRect = null;
+		ImageView imageView = new ImageView();
 		
 		/*
 		 * This section of the code changes the initial design based on whether or not Dark Mode is
 		 * selected. 
 		 */
 		if(mode == 0) {
+			InputStream dark = new FileInputStream("dark.jpg");
+			Image image = new Image(dark);
+			imageView.setImage(image);
 			border.setBackground(new Background(new BackgroundFill(Color.gray(0.3), null, null)));
 			pageRect = new Rectangle(800, 700, Color.rgb(64, 64, 64));
 			pageNum.setFill(Color.WHITE);
 		} else {
+			InputStream light = new FileInputStream("e-reader.jpg");
+			Image image = new Image(light);
+			imageView.setImage(image);
 			border.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
 			pageRect = new Rectangle(800, 700, Color.WHITE);
 			pageNum.setFill(Color.BLACK);
 		}
 		
-		border.setCenter(pageRect);
+		imageView.setX(100);
+		imageView.setY(50);
+		imageView.setFitWidth(600);
+		imageView.setPreserveRatio(true);
+		Group root = new Group(pageRect);
+		root.getChildren().add(imageView);
+		
+		border.setCenter(root);
 		BorderPane.setAlignment(pageRect, Pos.CENTER);
 		
 		/* 
@@ -628,7 +647,6 @@ public class EReaderView extends Application implements java.util.Observer {
 			MenuItem newBook = new MenuItem(bookName);
 			library.getItems().add(newBook);
 			newBook.setOnAction(libraryEvent -> {
-				@SuppressWarnings("unused")
 				Open openBook = new Open(newBook.getText());
 			});
 			
