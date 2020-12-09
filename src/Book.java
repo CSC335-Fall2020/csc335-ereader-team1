@@ -59,7 +59,8 @@ public class Book extends Observable {
 		}
 	}
 	
-	/** @author Sultan Alnhari 
+	/** 
+	 * @author Sultan Alnhari 
 	 * check if the book found or not 
 	 * @return return true if the book is spelled wrong and not valid 
 	 */

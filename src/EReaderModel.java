@@ -48,7 +48,8 @@ public class EReaderModel {
 	public double getProgress() {
 		return curBook.getProgress();
 	}
-	/** @author Sultan Alnhari 
+	/** 
+	 * @author Sultan Alnhari 
 	 * check if the book found or not 
 	 * @return return true if the book is spelled wrong and not valid 
 	 */
