@@ -185,6 +185,8 @@ public class EReaderView extends Application implements java.util.Observer {
 			open.setOnAction(event -> {
 				fileName = fileField.getText();
 				/* Call method from controller to open file */
+				
+				boolean check = controller.containsBook(fileName);
 
 				controller.openFile(fileName);
 				
@@ -198,9 +200,8 @@ public class EReaderView extends Application implements java.util.Observer {
 				curPage = controller.getBook(fileName).getCurPage();
 				controller.openBook(fileName);
 				
-				
 				/* Does not add new menu item if book is already in library */
-				if (controller.containsBook(fileName)) {
+				if (check) {
 					this.close();
 					return;
 				}
