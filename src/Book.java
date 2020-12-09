@@ -5,7 +5,7 @@ import java.util.Observable;
 import java.util.Scanner;
 
 public class Book extends Observable {
-	
+
 	private ArrayList<String> words = new ArrayList<>();
 	
 	/* Represents current page in the book */
@@ -26,7 +26,9 @@ public class Book extends Observable {
 	private float progress = 0;
 
 	/**
-	 * @author Sultan Alghamdi
+	 * constructor of the book 
+	 * @author Ali Hamza 
+	 * @author Sultan Alnhari 
 	 * @param name
 	 */
 	public Book(String name) {
@@ -34,7 +36,9 @@ public class Book extends Observable {
 	}
 
 	/**
-	 * @author Sultan Alghamdi
+	 * this method will read the book 
+	 * @author Ali Hamza 
+	 * @author Sultan Alnhari 
 	 * @param name
 	 */
 	public void readBook(String name) {
@@ -52,16 +56,15 @@ public class Book extends Observable {
 		} catch (FileNotFoundException e) {
 			this.bookNotFound = true;/////////////////////
 			System.out.println("Error");
-			e.printStackTrace();
 		}
 	}
 	
-	/**
-	 * @author Sultan Alghamdi
+	/** 
+	 * @author Sultan Alnhari 
 	 * check if the book found or not 
 	 * @return return true if the book is spelled wrong and not valid 
 	 */
-	public boolean bookNotFound() {////////////////////////////
+	public boolean bookNotFound() {
 		return this.bookNotFound;
 	}
 
@@ -72,6 +75,8 @@ public class Book extends Observable {
 	/**
 	 * This method opens the current book to the first page in the
 	 * book.
+	 * 
+	 * @author jackguerin
 	 */
 	public void openBook() {
 		
@@ -113,6 +118,8 @@ public class Book extends Observable {
 	 * This method turns finds and grabs the next page of words
 	 * in the current displayed book and updates the view
 	 * with those string of words.
+	 * 
+	 * @author jackguerin
 	 */
 	public void nextPage() {
 		
@@ -163,6 +170,8 @@ public class Book extends Observable {
 	 * This method finds and grabs the previous page of words
 	 * in the current displayed book and updates the view
 	 * with those string of words.
+	 * 
+	 * @author jackguerin
 	 */
 	public void prevPage() {
 		
@@ -207,16 +216,21 @@ public class Book extends Observable {
 	
 	/**
 	 * This method returns the current page number of this
-	 * book
+	 * book.
 	 * 
-	 * @return an integer representing the current page number
+	 * @author jackguerin
+	 * @return integer representing the current page number
 	 */
 	public int getCurPage() {
 		return curPage;
 	}
 	
 	/**
+	 * This method returns the progress for the current book
+	 * instance.
 	 * 
+	 * @author jackguerin
+	 * @return float representing the current progress
 	 */
 	public float getProgress() {
 		return this.progress;

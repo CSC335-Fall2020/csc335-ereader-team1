@@ -63,7 +63,12 @@ public class EReaderView extends Application implements java.util.Observer {
 	
 	// Dark mode selection indicator
 	private int mode;
-
+	
+	/**
+	 * 
+	 * @author jackguerin
+	 * 
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		/*
@@ -101,7 +106,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		page.setWrapText(true);
 		/* Changes the wrapping nature of text to only the center of BorderPane */
 		page.setPadding(new Insets(50)); 
-		page.setEditable(false);  
+		page.setEditable(false);  ////////////////new//////////////	
 		
 		stackCenter.getChildren().addAll(page);
 		
@@ -131,7 +136,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		border.setBottom(pageNum);
 		BorderPane.setAlignment(pageNum, Pos.TOP_CENTER);
 		
-		// @author Sultan Alghamdi
+		/////////////// progress bar @author Sultan Alnhari//
 		ProgressBar progressBar = new ProgressBar();
 		progressBar.setProgress(controller.getProgress());
 		
@@ -141,10 +146,15 @@ public class EReaderView extends Application implements java.util.Observer {
 		tileButtoms.setVgap(8.0);
 		tileButtoms.getChildren().addAll(progressBar, pageNum);
 		border.setBottom(tileButtoms);
-		
+		//////////////////////////////////////////////////
 		
 	}
 	
+	/**
+	 * 
+	 * @author jackguerin
+	 *
+	 */
 	private class Open extends Stage {
 			
 		public Open() {
@@ -179,7 +189,7 @@ public class EReaderView extends Application implements java.util.Observer {
 
 				controller.openFile(fileName);
 				
-				if (controller.bookNotFoundss() == true) { //////// to check if the book is right
+				if (controller.bookNotFoundss() == true) { // Sultan, to check if the book is right
 					erorr(null);
 					this.close();
 					return;
@@ -229,7 +239,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		 */
 		public Open(String bookName) {
 			controller.openFile(bookName);
-			if (controller.bookNotFoundss() == true) { //////// to check if the book is right
+			if (controller.bookNotFoundss() == true) { // @author Sultan Alnhari  to check if the book is right
 				erorr(null);
 				this.close();
 				return;
@@ -250,8 +260,8 @@ public class EReaderView extends Application implements java.util.Observer {
 
 	@Override
 	/**
-	 * @author Sultan Alghamdi
-	 * 
+	 * @author jackguerin 
+	 * add some touches to the start Sultan Alnhari 
 	 */
 	public void start(Stage stage) throws Exception {
 		/* 
@@ -278,7 +288,7 @@ public class EReaderView extends Application implements java.util.Observer {
 			openFile.showAndWait();
 		});
 		
-		// @author Sultan Alghamdi
+		// @author Sultan Alnhari
 		/* Below is the button that will bookmark the current page. */
 		Button savetButton = new Button("Save");
 		savetButton.setOnAction(event -> {
@@ -290,7 +300,7 @@ public class EReaderView extends Application implements java.util.Observer {
 		
 		CustomMenuItem saveButtonCustomMenuItem = new CustomMenuItem(savetButton);
 		file.getItems().add(saveButtonCustomMenuItem);
-		
+		///////////////////////////////////////////
 		
 		/* This menu option will allow a user to change the font and font size */
 		Menu settings = new Menu("Settings");
@@ -359,39 +369,44 @@ public class EReaderView extends Application implements java.util.Observer {
 		menuBar.getMenus().add(settings);
 		menuBar.getMenus().add(library);
 		
-		// @author Sultan Alghamdi
-		// adding the find field under this are
+		/////////////////////////////////////////////////////////////////////////////////
+		//  @author Sultan Alnhari adding the find field under this are
+		/////////////////////////////////////////////////////////////////////////////////
 		/* This menu option will allow a user to find the word */
-		Menu find = new Menu("Find");
 		
-		Text find_here = new Text("Find");
-		TextField findField = new TextField();
+//		Menu find = new Menu("Find");
+//		
+//		Text find_here = new Text("Find");
+//		TextField findField = new TextField();
+//		
+//		HBox findHBox = new HBox(10, find_here, findField);
+//		fontHBox.setAlignment(Pos.BASELINE_CENTER);
+//		
+//		CustomMenuItem findCustomMenuItem = new CustomMenuItem(findHBox);
+//		find.getItems().add(findCustomMenuItem);
+//		menuBar.getMenus().add(find);
+//		
+//		/* Below is the button that will apply these new changes */
+//		Button findButton = new Button("Find");
+//		findButton.setOnAction(event -> {
+//			
+//		});
+//		
+//		CustomMenuItem findButtonCustomMenuItem = new CustomMenuItem(findButton);
+//		find.getItems().add(findButtonCustomMenuItem);
+//		
+//		
+//		/* Below is the button that will apply these new changes */
+//		Button highlightButton = new Button("Highlight");
+//		highlightButton.setOnAction(event -> {
+//			
+//		});
+//		
+//		CustomMenuItem highlightButtonCustomMenuItem = new CustomMenuItem(highlightButton);
+//		settings.getItems().add(highlightButtonCustomMenuItem);
 		
-		HBox findHBox = new HBox(10, find_here, findField);
-		fontHBox.setAlignment(Pos.BASELINE_CENTER);
-		
-		CustomMenuItem findCustomMenuItem = new CustomMenuItem(findHBox);
-		find.getItems().add(findCustomMenuItem);
-		menuBar.getMenus().add(find);
-		
-		/* Below is the button that will apply these new changes */
-		Button findButton = new Button("Find");
-		findButton.setOnAction(event -> {
-			
-		});
-		
-		CustomMenuItem findButtonCustomMenuItem = new CustomMenuItem(findButton);
-		find.getItems().add(findButtonCustomMenuItem);
-		
-		
-		/* Below is the button that will apply these new changes */
-		Button highlightButton = new Button("Highlight");
-		highlightButton.setOnAction(event -> {
-			
-		});
-		
-		CustomMenuItem highlightButtonCustomMenuItem = new CustomMenuItem(highlightButton);
-		settings.getItems().add(highlightButtonCustomMenuItem);
+		/////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////
 
 		
 		/* This sets up the border pane below the menu bar */
@@ -604,7 +619,7 @@ public class EReaderView extends Application implements java.util.Observer {
 	}
 	
 	/**
-	 * @author Sultan Alghamdi
+	 * @author Sultan Alnhari
 	 * this method will control the error message if book is not found or spilled wrong
 	 * @param ActionEvent e action event
 	 */
