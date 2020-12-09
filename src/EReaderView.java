@@ -187,6 +187,7 @@ public class EReaderView extends Application implements java.util.Observer {
 				fileName = fileField.getText();
 				/* Call method from controller to open file */
 				
+				// Makes sure that the book does not already exist in the library
 				boolean check = controller.containsBook(fileName);
 
 				controller.openFile(fileName);
@@ -201,7 +202,7 @@ public class EReaderView extends Application implements java.util.Observer {
 				curPage = controller.getBook(fileName).getCurPage();
 				controller.openBook(fileName);
 				
-				/* Does not add new menu item if book is already in library */
+				/* Does not add new menu item if book is already in library, acts on boolean discovered earlier */
 				if (check) {
 					this.close();
 					return;
