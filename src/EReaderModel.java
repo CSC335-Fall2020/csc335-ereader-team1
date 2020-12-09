@@ -10,7 +10,8 @@ public class EReaderModel {
 
 	/**
 	 * read book 
-	 * @author Ali Hamza @author Sultan Alnhari 
+	 * @author Ali Hamza 
+	 * @author Sultan Alnhari 
 	 * @param bookName
 	 */
 	public void readBook(String bookName) {
@@ -26,7 +27,8 @@ public class EReaderModel {
 	/**
 	 * This method is used to interact with the current displayed book
 	 * in the library and turn its current page to the first one.
-	 * @author Ali Hamza @author Sultan Alnhari 
+	 * @author Ali Hamza 
+	 * @author Sultan Alnhari 
 	 * @param fileName represents the book to open
 	 */
 	public void openBook(String fileName) {
@@ -55,7 +57,8 @@ public class EReaderModel {
 	}
 	
 	/**
-	 * @author Ali Hamza @author Sultan Alnhari
+	 * @author Ali Hamza
+	 * @author Sultan Alnhari
 	 * @param book
 	 */
 	public void Library(String name, Book book) {
@@ -63,7 +66,8 @@ public class EReaderModel {
 	}
 	
 	/**
-	 * @author Ali Hamza @author Sultan Alnhari 
+	 * @author Ali Hamza 
+	 * @author Sultan Alnhari 
 	 * @param book
 	 * @return
 	 */
@@ -72,7 +76,8 @@ public class EReaderModel {
 	}
 	
 	/**
-	 * @author Ali Hamza @author Sultan Alnhari 
+	 * @author Ali Hamza 
+	 * @author Sultan Alnhari 
 	 * @param name
 	 */
 	public ArrayList<String> getLines(String name) {
@@ -81,7 +86,8 @@ public class EReaderModel {
 		return lines;
 	}
 	/**
-	 * @author Ali Hamza @author Sultan Alnhari
+	 * @author Ali Hamza 
+	 * @author Sultan Alnhari
 	 * @return book library
 	 */
 	public HashMap<String, Book> getLibrary(){

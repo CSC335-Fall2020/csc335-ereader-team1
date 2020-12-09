@@ -27,7 +27,8 @@ public class Book extends Observable {
 
 	/**
 	 * constructor of the book 
-	 * @author Ali Hamza @author Sultan Alnhari 
+	 * @author Ali Hamza 
+	 * @author Sultan Alnhari 
 	 * @param name
 	 */
 	public Book(String name) {
@@ -36,7 +37,8 @@ public class Book extends Observable {
 
 	/**
 	 * this method will read the book 
-	 * @author Ali Hamza @author Sultan Alnhari 
+	 * @author Ali Hamza 
+	 * @author Sultan Alnhari 
 	 * @param name
 	 */
 	public void readBook(String name) {
