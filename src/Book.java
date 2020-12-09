@@ -70,6 +70,8 @@ public class Book extends Observable {
 	/**
 	 * This method opens the current book to the first page in the
 	 * book.
+	 * 
+	 * @author jackguerin
 	 */
 	public void openBook() {
 		
@@ -111,6 +113,8 @@ public class Book extends Observable {
 	 * This method turns finds and grabs the next page of words
 	 * in the current displayed book and updates the view
 	 * with those string of words.
+	 * 
+	 * @author jackguerin
 	 */
 	public void nextPage() {
 		
@@ -161,6 +165,8 @@ public class Book extends Observable {
 	 * This method finds and grabs the previous page of words
 	 * in the current displayed book and updates the view
 	 * with those string of words.
+	 * 
+	 * @author jackguerin
 	 */
 	public void prevPage() {
 		
@@ -205,16 +211,21 @@ public class Book extends Observable {
 	
 	/**
 	 * This method returns the current page number of this
-	 * book
+	 * book.
 	 * 
-	 * @return an integer representing the current page number
+	 * @author jackguerin
+	 * @return integer representing the current page number
 	 */
 	public int getCurPage() {
 		return curPage;
 	}
 	
 	/**
+	 * This method returns the progress for the current book
+	 * instance.
 	 * 
+	 * @author jackguerin
+	 * @return float representing the current progress
 	 */
 	public float getProgress() {
 		return this.progress;

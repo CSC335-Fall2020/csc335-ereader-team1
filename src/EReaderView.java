@@ -63,7 +63,11 @@ public class EReaderView extends Application implements java.util.Observer {
 	
 	// Dark mode selection indicator
 	private int mode;
-
+	
+	/**
+	 * 
+	 * @author jackguerin
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		/*
@@ -145,6 +149,11 @@ public class EReaderView extends Application implements java.util.Observer {
 		
 	}
 	
+	/**
+	 * 
+	 * @author jackguerin
+	 *
+	 */
 	private class Open extends Stage {
 			
 		public Open() {
