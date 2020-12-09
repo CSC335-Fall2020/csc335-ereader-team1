@@ -26,7 +26,9 @@ public class Book extends Observable {
 	private float progress = 0;
 
 	/**
-	 * 
+	 * constructor of the book 
+	 * @author Ali Hamza 
+	 * @author Sultan Alnhari 
 	 * @param name
 	 */
 	public Book(String name) {
@@ -34,7 +36,9 @@ public class Book extends Observable {
 	}
 
 	/**
-	 * 
+	 * this method will read the book 
+	 * @author Ali Hamza 
+	 * @author Sultan Alnhari 
 	 * @param name
 	 */
 	public void readBook(String name) {
@@ -55,11 +59,12 @@ public class Book extends Observable {
 		}
 	}
 	
-	/**
+	/** 
+	 * @author Sultan Alnhari 
 	 * check if the book found or not 
 	 * @return return true if the book is spelled wrong and not valid 
 	 */
-	public boolean bookNotFound() {////////////////////////////
+	public boolean bookNotFound() {
 		return this.bookNotFound;
 	}
 
