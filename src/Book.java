@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Scanner;
 
+/**
+ * Class representing the Books themselves within the EReader program. 
+ * @author jackguerin
+ * @author Ali Hamza
+ * @author Sultan Alnhari
+ */
 public class Book extends Observable {
 
 	private ArrayList<String> words = new ArrayList<>();
@@ -26,20 +32,20 @@ public class Book extends Observable {
 	private float progress = 0;
 
 	/**
-	 * constructor of the book 
+	 * Book Constructor Method. 
 	 * @author Ali Hamza 
 	 * @author Sultan Alnhari 
-	 * @param name
+	 * @param name, String representation of the name or file path of book. 
 	 */
 	public Book(String name) {
 		readBook(name);
 	}
 
 	/**
-	 * this method will read the book 
+	 * Reads in the book and stores its contents. 
 	 * @author Ali Hamza 
 	 * @author Sultan Alnhari 
-	 * @param name
+	 * @param name, String representation of book name or file path. 
 	 */
 	public void readBook(String name) {
 		try {
@@ -61,13 +67,17 @@ public class Book extends Observable {
 	
 	/** 
 	 * @author Sultan Alnhari 
-	 * check if the book found or not 
-	 * @return return true if the book is spelled wrong and not valid 
+	 * Returns if the book exists. 
+	 * @return return true if the book is spelled wrong and not valid. 
 	 */
 	public boolean bookNotFound() {
 		return this.bookNotFound;
 	}
 
+	/**
+	 * Returns the complete List of all words in the book. 
+	 * @return ArrayList representation of all words. 
+	 */
 	public ArrayList<String> lines() {
 		return words;
 	}
@@ -219,7 +229,7 @@ public class Book extends Observable {
 	 * book.
 	 * 
 	 * @author jackguerin
-	 * @return integer representing the current page number
+	 * @return integer representing the current page number. 
 	 */
 	public int getCurPage() {
 		return curPage;
@@ -230,7 +240,7 @@ public class Book extends Observable {
 	 * instance.
 	 * 
 	 * @author jackguerin
-	 * @return float representing the current progress
+	 * @return float representing the current progress. 
 	 */
 	public float getProgress() {
 		return this.progress;
