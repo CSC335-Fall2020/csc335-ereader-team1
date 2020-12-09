@@ -6,12 +6,15 @@ Team members:
 
 Ali Hamza
 
-Anthony Lau - planning, implemented persistent settings, library, light/dark mode, and added Sultan's logos to GUI
+Anthony Lau
 
 Sultan Alnhari
 
 Jack Guerin
 
+
+
+Trello link: https://trello.com/b/M6GiBMKf
 
 Please note that if you are using eclipse you should have Text file encoding set to UTF-8 in order for some text files to work. Window > Preferences > General > Workspace. 
 
