@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
  * controller, model, and book classes. Each test goes through certain situations
  * that might be reached when any of the classes are changed or updated.
  * 
- * @author jackguerin
+ * @author Jack Guerin
  */
 public class EReaderControllerTest {
 	

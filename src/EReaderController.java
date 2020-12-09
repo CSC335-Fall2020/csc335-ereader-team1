@@ -5,7 +5,7 @@ import java.util.HashMap;
  * Controller interface for EReader application. Interacts with Model. 
  * @author Ali Hamza
  * @author Sultan Alnhari
- * @author jackguerin
+ * @author Jack Guerin
  */
 public class EReaderController {
 	
